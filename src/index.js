@@ -22,13 +22,12 @@ export default {
       const secret = url.searchParams.get('secret');
       
       // Check the secret
-    // Temporarily disabled for testing
-// if (!secret || secret !== env.STATS_SECRET) {
-//   return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-//     status: 401,
-//     headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-//   });
-// }
+if (!secret || secret !== env.STATS_SECRET) {
+  return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+    status: 401,
+    headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+  });
+}
 
       // Read all tracked events
       const keys = ['visits', 'launch_clicks', 'install_clicks', 'research_opens'];
