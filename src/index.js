@@ -22,7 +22,7 @@ export default {
       const secret = url.searchParams.get('secret');
       
       // Check the secret
-if (!secret || secret !== env.STATS_SECRET) {
+if (!secret || secret !== "lazlab2025secure") {
   return new Response(JSON.stringify({ error: 'Unauthorized' }), {
     status: 401,
     headers: { ...corsHeaders, 'Content-Type': 'application/json' }
