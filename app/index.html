@@ -65,10 +65,14 @@ body{font-family:var(--f);background:var(--bg);color:var(--txt);-webkit-font-smo
 #brand-splash.bs-out{opacity:0;pointer-events:none}
 
 .bs-video-container{
-  position:absolute;inset:0;
-  display:flex;align-items:center;justify-content:center;
-  z-index:-1;
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border-radius:28%;
   overflow:hidden;
+  z-index:0;
+  display:flex;align-items:center;justify-content:center;
 }
 .bs-video-container video{
   width:100%;
@@ -90,7 +94,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--txt);-webkit-font-smo
   background:linear-gradient(160deg,#080a10 0%,#0d0f1a 40%,#0a1410 100%);
 }
 @keyframes iconPop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
-.bs-icon img{width:100%;height:100%;object-fit:cover;display:block}
+.bs-icon img{width:100%;height:100%;object-fit:cover;display:block;position:relative;z-index:1}
 .bs-icon.bs-no-video{box-shadow:0 0 60px rgba(201,168,76,.35),0 20px 60px rgba(0,0,0,.7)}
 
 .bs-name{
@@ -1742,8 +1746,10 @@ body.compact .chip{padding:4px 10px;font-size:14px}
 
 
 <div id="brand-splash">
-  <div class="bs-video-container" id="bs-video-container"></div>
-  <div class="bs-icon" id="bs-icon"><img id="bs-img" src="" alt="J-VOX"></div>
+  <div class="bs-icon" id="bs-icon">
+    <div class="bs-video-container" id="bs-video-container"></div>
+    <img id="bs-img" src="" alt="J-VOX">
+  </div>
   <div class="bs-name">J-VOX</div>
   <div class="bs-tag">AAC — Augmentative Communication</div>
   <div class="bs-sub">Powered by AI · Built with love</div>
@@ -4162,28 +4168,47 @@ video.autoplay=true;
 video.loop=true;
 video.muted=true;
 video.playsinline=true;
-video.preload='auto';
-video.src=videoPath;
+video.preload='metadata';
+video.style.width='100%';
+video.style.height='100%';
+video.style.objectFit='cover';
+let metadataLoaded=false;
 video.onloadedmetadata=()=>{
+if(!metadataLoaded){
+metadataLoaded=true;
+container.innerHTML='';
 container.appendChild(video);
 videoLoaded=true;
 icon.classList.add('bs-with-video');
+video.play().catch(()=>{});
+}
+};
+video.oncanplay=()=>{
+if(!videoLoaded&&!metadataLoaded){
+metadataLoaded=true;
+container.innerHTML='';
+container.appendChild(video);
+videoLoaded=true;
+icon.classList.add('bs-with-video');
+video.play().catch(()=>{});
+}
 };
 video.onerror=()=>{
 if(index<videoFormats.length-1){
-setTimeout(()=>tryLoadVideo(videoFormats[index+1],index+1),50);
+setTimeout(()=>tryLoadVideo(videoFormats[index+1],index+1),100);
 }else{
 icon.classList.add('bs-no-video');
 }
 };
+video.src=videoPath;
 }else if(index<videoFormats.length-1){
-setTimeout(()=>tryLoadVideo(videoFormats[index+1],index+1),50);
+setTimeout(()=>tryLoadVideo(videoFormats[index+1],index+1),100);
 }else{
 icon.classList.add('bs-no-video');
 }
 }catch(e){
 if(index<videoFormats.length-1){
-setTimeout(()=>tryLoadVideo(videoFormats[index+1],index+1),50);
+setTimeout(()=>tryLoadVideo(videoFormats[index+1],index+1),100);
 }else{
 icon.classList.add('bs-no-video');
 }
