@@ -45,6 +45,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .hero-logo-lockup{display:flex;align-items:center;justify-content:center;gap:22px;margin-bottom:44px;animation:fade-up 0.7s ease both;}
 .hero-icon{width:88px;height:88px;border-radius:22px;overflow:hidden;box-shadow:0 0 0 1px rgba(201,169,110,0.2),0 0 40px rgba(201,169,110,0.2),0 20px 60px rgba(0,0,0,0.5);flex-shrink:0;position:relative;}
 .hero-icon img{width:100%;height:100%;object-fit:cover;display:block;}
+.hero-icon video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;z-index:1;}
 .hero-lockup-text{text-align:left;}
 .hero-lockup-name{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;letter-spacing:0.12em;line-height:1;color:var(--teal);}
 .hero-lockup-sub{font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--text3);margin-top:4px;}
@@ -329,7 +330,7 @@ footer{border-top:1px solid var(--border2);padding:36px 40px;display:flex;align-
   <div class="hero-orb"></div>
   <div class="hero-content">
     <div class="hero-logo-lockup">
-      <div class="hero-icon"><img src="assets/jvox_icon.png" alt="J-VOX" onerror="this.parentElement.style.background='linear-gradient(135deg,#1a2030,#111520)';this.style.display='none';"></div>
+      <div class="hero-icon" id="hero-icon"><video id="hero-video" autoplay loop muted playsinline></video><img src="assets/jvox_icon.png" alt="J-VOX" onerror="this.parentElement.style.background='linear-gradient(135deg,#1a2030,#111520)';this.style.display='none';"></div>
       <div class="hero-lockup-text">
         <div class="hero-lockup-name">J-VOX</div>
         <div class="hero-lockup-sub">Augmentative &amp; Alternative Communication</div>
@@ -758,7 +759,34 @@ const track = (event) => {
 track('visits');
 
 /* ════════════════════════════════════════
-   DEMO & MODAL
+   HERO VIDEO LOADING
+════════════════════════════════════════ */
+function loadHeroVideo() {
+  const video = document.getElementById('hero-video');
+  const formats = ['assets/splash.mp4', 'assets/splash.webm', 'assets/splash.mov'];
+  
+  const tryFormat = async (index) => {
+    if (index >= formats.length) return; // All formats failed, show image
+    
+    const path = formats[index];
+    try {
+      const resp = await fetch(path, { method: 'HEAD' });
+      if (resp.ok) {
+        video.src = path;
+        video.style.display = 'block';
+        video.play().catch(() => {});
+        return;
+      }
+    } catch (e) {}
+    
+    // Try next format
+    tryFormat(index + 1);
+  };
+  
+  tryFormat(0);
+}
+
+document.addEventListener('DOMContentLoaded', loadHeroVideo);
 ════════════════════════════════════════ */
 const cats={feelings:[{e:"😊",l:"I am happy"},{e:"😔",l:"I feel sad"},{e:"😟",l:"I am worried"},{e:"😡",l:"I am frustrated"},{e:"😴",l:"I am tired"},{e:"🤒",l:"I feel sick"},{e:"😍",l:"I love this"},{e:"😰",l:"I am overwhelmed"}],needs:[{e:"💧",l:"I am thirsty"},{e:"🍽️",l:"I am hungry"},{e:"🚽",l:"Bathroom please",direct:true},{e:"🛑",l:"I need a break",direct:true},{e:"🤫",l:"Too loud"},{e:"💊",l:"I need medicine"},{e:"🤗",l:"I need a hug"},{e:"🆘",l:"I need help",direct:true}],social:[{e:"👋",l:"Hello"},{e:"😄",l:"I am good"},{e:"🙏",l:"Thank you"},{e:"❓",l:"Can you help me?"},{e:"✅",l:"Yes"},{e:"❌",l:"No"},{e:"⏰",l:"Wait please"},{e:"👍",l:"That is great"}],activities:[{e:"🎮",l:"I want to play"},{e:"📖",l:"Read a story"},{e:"🎵",l:"I want music"},{e:"📺",l:"Watch TV"},{e:"🏊",l:"Go swimming"},{e:"🛏️",l:"I want to rest"},{e:"🚗",l:"Go for a drive"},{e:"🎨",l:"Draw and color"}],food:[{e:"🍕",l:"Pizza"},{e:"🍎",l:"Apple"},{e:"🥪",l:"Sandwich"},{e:"🍪",l:"Cookie"},{e:"🥛",l:"Milk"},{e:"🍦",l:"Ice cream"},{e:"🍗",l:"Chicken"},{e:"🥤",l:"Juice"}]};
 let sentence=[];
