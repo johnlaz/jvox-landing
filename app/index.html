@@ -2600,6 +2600,7 @@ try{const sit=localStorage.getItem('jvox-situations');if(sit)S.situations=JSON.p
 try{const freq=localStorage.getItem('jvox-frequent');if(freq)S.frequentPhrases=JSON.parse(freq);else S.frequentPhrases={questions:[],responses:[],statements:[]}}catch(e){S.frequentPhrases={questions:[],responses:[],statements:[]}}
 if(!S.scenes[S.curScene])S.curScene=Object.keys(S.scenes)[0]||'home';
 updateExperienceModeBtns();
+updateWandLabel();
 }
 function saveData(){
 try{localStorage.setItem('jvox-cats',JSON.stringify(S.cats));localStorage.setItem('jvox-scenes',JSON.stringify(S.scenes));localStorage.setItem('jvox-core',JSON.stringify(S.coreSym));localStorage.setItem('jvox-experience',S.experienceMode);localStorage.setItem('jvox-situations',JSON.stringify(S.situations));localStorage.setItem('jvox-frequent',JSON.stringify(S.frequentPhrases))}catch(e){}
@@ -4217,12 +4218,23 @@ function setExperienceMode(mode){
 S.experienceMode=mode;
 localStorage.setItem('jvox-experience',mode);
 updateExperienceModeBtns();
+updateWandLabel();
 saveData();
 renderCategories();
 }
 function updateExperienceModeBtns(){
 document.getElementById('exp-child').classList.toggle('on',S.experienceMode==='child');
 document.getElementById('exp-adult').classList.toggle('on',S.experienceMode==='adult');
+}
+function updateWandLabel(){
+const wandBtn=document.getElementById('wand-btn');
+if(S.experienceMode==='adult'){
+wandBtn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4V2"/><path d="M15 10V8"/><path d="M11 6h2"/><path d="M17 6h2"/><path d="M3 21l9-9"/><path d="M12.5 6.5L14 5l1.5 1.5L14 8z"/><path d="M20 14v-2"/><path d="M20 20v-2"/><path d="M17 17h2"/><path d="M23 17h-2"/></svg>Polish';
+wandBtn.setAttribute('aria-label','Polish sentence');
+}else{
+wandBtn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4V2"/><path d="M15 10V8"/><path d="M11 6h2"/><path d="M17 6h2"/><path d="M3 21l9-9"/><path d="M12.5 6.5L14 5l1.5 1.5L14 8z"/><path d="M20 14v-2"/><path d="M20 20v-2"/><path d="M17 17h2"/><path d="M23 17h-2"/></svg>Magic Wand';
+wandBtn.setAttribute('aria-label','Magic Wand');
+}
 }
 function trackPhrase(text,type){
 if(!text||!['questions','responses','statements'].includes(type))return;
