@@ -319,7 +319,7 @@ footer{border-top:1px solid var(--border2);padding:36px 40px;display:flex;align-
     <li><a href="#demo">Demo</a></li>
     <li><a href="#features">Features</a></li>
     <li><a href="#pricing">Plans</a></li>
-    <li><a href="https://johnlaz.github.io/jvox/" class="nav-cta">Launch App</a></li>
+    <li><a href="./app/" class="nav-cta">Launch App</a></li>
   </ul>
 </nav>
 
@@ -346,7 +346,7 @@ footer{border-top:1px solid var(--border2);padding:36px 40px;display:flex;align-
       <span class="pricing-pill free" style="color:var(--text2)">No credit card to start</span>
     </div>
     <div class="hero-actions">
-      <a href="https://johnlaz.github.io/jvox/" class="btn-primary">↗ Open J-VOX Free</a>
+      <a href="./app/" class="btn-primary">↗ Open J-VOX Free</a>
       <a href="#pricing" class="btn-ghost">See Plans</a>
     </div>
   </div>
@@ -596,7 +596,7 @@ footer{border-top:1px solid var(--border2);padding:36px 40px;display:flex;align-
     <h2 class="cta-title">Give someone<br>their <em>voice back</em></h2>
     <p class="cta-sub">J-VOX installs on any device in seconds and is completely free to start — no sign-up, no credit card, no barriers.</p>
     <div class="hero-actions">
-      <a href="https://johnlaz.github.io/jvox/" class="btn-primary">↗ Open J-VOX Free</a>
+      <a href="./app/" class="btn-primary">↗ Open J-VOX Free</a>
       <a href="assets/jvox.apk" download="jvox.apk" class="btn-ghost" id="installBtn" onclick="track('install_clicks')">⬇ Install as App</a>
     </div>
   </div>
@@ -793,7 +793,7 @@ document.querySelectorAll(".stat-num[data-target]").forEach(el=>statObs.observe(
 
 // Track Launch App button clicks
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('a[href*="johnlaz.github.io/jvox"]').forEach(link => {
+  document.querySelectorAll('a[href*="/app"], a[href*="./app"]').forEach(link => {
     link.addEventListener('click', () => track('launch_clicks'));
   });
 });
@@ -836,7 +836,7 @@ if(PLAY_STORE_URL||APP_STORE_URL){if(PLAY_STORE_URL){installBtn.href=PLAY_STORE_
 else{fetch(APK_PATH,{method:"HEAD"}).then(r=>{if(!r.ok){installBtn.href="#";installBtn.removeAttribute("download");installBtn.addEventListener("click",e=>{e.preventDefault();track("install_clicks");installBtn.textContent="⏳ APK coming soon";installBtn.style.opacity="0.6";setTimeout(()=>{installBtn.textContent="⬇ Install as App";installBtn.style.opacity="";},2400);});}}).catch(()=>{});}
 
 // Track all Launch App links
-document.querySelectorAll('a[href*="johnlaz.github.io/jvox"]').forEach(link=>{
+document.querySelectorAll('a[href*="/app"], a[href*="./app"]').forEach(link=>{
   if(!link.onclick || !link.onclick.toString().includes('track')) {
     link.addEventListener('click',()=>track('launch_clicks'));
   }
