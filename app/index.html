@@ -4245,6 +4245,7 @@ saveData();
 }
 function init(){
 initSplashVideo();
+initBackButtonHandler();
 injectIcons();setAppleIcon();
 loadData();
 S.groqKey=localStorage.getItem('jvox-groq')||'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';
@@ -4658,6 +4659,102 @@ document.getElementById('sit-detail').style.display='none';
 }
 function escapeHtml(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
 function escapeAttr(s){return(s||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
+
+/* ════════════════════════════════════════
+   BACK BUTTON & PWA HANDLING
+════════════════════════════════════════ */
+function isPWAMode(){
+return window.navigator.standalone===true||window.matchMedia('(display-mode: standalone)').matches||window.matchMedia('(display-mode: fullscreen)').matches;
+}
+function initBackButtonHandler(){
+history.pushState({page:1},'',location.href);
+window.addEventListener('popstate',(e)=>{
+if(isPWAMode()){
+history.pushState({page:1},'',location.href);
+}else{
+showLeaveAppWarning();
+}
+});
+}
+function showLeaveAppWarning(){
+const modal=document.createElement('div');
+modal.className='ov';
+modal.id='leave-warning-modal';
+modal.style.zIndex='99999';
+modal.innerHTML=`
+<div class="dr" style="max-width:400px">
+  <div class="d-hd">
+    <span>Leave J-VOX?</span>
+    <button class="d-cls" onclick="closeOv('leave-warning-modal')">✕</button>
+  </div>
+  <div style="padding:20px;color:var(--text2)">
+    <p style="margin-bottom:16px;line-height:1.6">You're about to leave the app. For the best experience with full back button support, consider installing J-VOX as an app.</p>
+    <div style="display:flex;gap:10px">
+      <button onclick="closeOv('leave-warning-modal');history.back()" style="flex:1;padding:10px;background:rgba(201,169,110,0.2);border:1px solid rgba(201,169,110,0.3);color:var(--text);border-radius:6px;cursor:pointer;font-weight:500">Leave</button>
+      <button onclick="closeOv('leave-warning-modal')" style="flex:1;padding:10px;background:var(--accent);color:var(--bg);border:none;border-radius:6px;cursor:pointer;font-weight:500">Stay in App</button>
+    </div>
+  </div>
+</div>
+`;
+document.body.appendChild(modal);
+setTimeout(()=>modal.classList.add('open'),0);
+}
+
+/* ════════════════════════════════════════
+   PWA INSTALL PROMPT
+════════════════════════════════════════ */
+let deferredPrompt;
+let pwaPromptShown=false;
+window.addEventListener('beforeinstallprompt',(e)=>{
+e.preventDefault();
+deferredPrompt=e;
+showPWAPrompt();
+});
+function showPWAPrompt(){
+if(pwaPromptShown||isPWAMode())return;
+pwaPromptShown=true;
+const banner=document.createElement('div');
+banner.id='pwa-prompt-banner';
+banner.style.cssText=`
+  position:fixed;bottom:0;left:0;right:0;z-index:9998;
+  background:linear-gradient(135deg,var(--surface),var(--bg3));
+  border-top:1px solid var(--border);
+  padding:12px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;
+  backdrop-filter:blur(12px);
+  font-size:14px;
+  animation:slideUp 0.3s ease;
+`;
+banner.innerHTML=`
+  <div style="flex:1">
+    <div style="font-weight:500;margin-bottom:4px">📱 Install J-VOX</div>
+    <div style="font-size:12px;opacity:0.8;color:var(--text2)">Get full back button support & offline access</div>
+  </div>
+  <button onclick="installPWA()" style="padding:8px 16px;background:var(--accent);color:var(--bg);border:none;border-radius:6px;cursor:pointer;font-weight:500;white-space:nowrap">Install</button>
+  <button onclick="dismissPWAPrompt()" style="padding:8px 12px;background:transparent;border:1px solid var(--border);color:var(--text2);border-radius:6px;cursor:pointer;font-size:18px">✕</button>
+`;
+document.body.appendChild(banner);
+const style=document.createElement('style');
+style.textContent=`@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}`;
+document.head.appendChild(style);
+}
+function installPWA(){
+if(deferredPrompt){
+deferredPrompt.prompt();
+deferredPrompt.userChoice.then((choiceResult)=>{
+if(choiceResult.outcome==='accepted'){
+dismissPWAPrompt();
+toast('J-VOX installed! ✨');
+}
+deferredPrompt=null;
+});
+}
+}
+function dismissPWAPrompt(){
+const banner=document.getElementById('pwa-prompt-banner');
+if(banner)banner.remove();
+}
 
 (function(){
   try{
