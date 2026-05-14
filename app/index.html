@@ -67,17 +67,15 @@ body{font-family:var(--f);background:var(--bg);color:var(--txt);-webkit-font-smo
 .bs-video-container{
   position:absolute;inset:0;
   display:flex;align-items:center;justify-content:center;
-  z-index:-1;
   overflow:hidden;
+  border-radius:inherit;
+  z-index:2;
 }
 .bs-video-container video{
   width:100%;
   height:100%;
   object-fit:cover;
   display:block;
-  position:absolute;
-  top:0;
-  left:0;
 }
 
 .bs-icon{
@@ -94,6 +92,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--txt);-webkit-font-smo
 }
 @keyframes iconPop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
 .bs-icon img{width:100%;height:100%;object-fit:cover;display:block;position:relative;z-index:1}
+.bs-icon.bs-with-video img{display:none}
 .bs-icon.bs-no-video{box-shadow:0 0 60px rgba(201,168,76,.35),0 20px 60px rgba(0,0,0,.7)}
 
 .bs-name{
@@ -1745,8 +1744,7 @@ body.compact .chip{padding:4px 10px;font-size:14px}
 
 
 <div id="brand-splash">
-  <div class="bs-video-container" id="bs-video-container"></div>
-  <div class="bs-icon" id="bs-icon"><img id="bs-img" src="" alt="J-VOX"></div>
+  <div class="bs-icon" id="bs-icon"><img id="bs-img" src="" alt="J-VOX"><div class="bs-video-container" id="bs-video-container"></div></div>
   <div class="bs-name">J-VOX</div>
   <div class="bs-tag">AAC — Augmentative Communication</div>
   <div class="bs-sub">Powered by AI · Built with love</div>
