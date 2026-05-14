@@ -3,6 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080a0d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="J-VOX">
+<meta name="application-name" content="J-VOX">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="description" content="J-VOX AAC — AI-powered Augmentative and Alternative Communication for non-verbal individuals.">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./assets/jvox_icon.png">
+<link rel="icon" type="image/png" href="./assets/jvox_icon.png">
 <title>J-VOX AAC — Every Person Deserves a Voice</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
@@ -841,6 +851,25 @@ document.querySelectorAll('a[href*="/app"], a[href*="./app"]').forEach(link=>{
     link.addEventListener('click',()=>track('launch_clicks'));
   }
 });
+
+/* ── PWA SERVICE WORKER ── */
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('./sw.js',{scope:'./'})
+      .then(reg=>{
+        reg.addEventListener('updatefound',()=>{
+          const newSW=reg.installing;
+          newSW.addEventListener('statechange',()=>{
+            if(newSW.state==='installed'&&navigator.serviceWorker.controller){
+              // New version available
+            }
+          });
+        });
+      })
+      .catch(()=>{});
+  });
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{});
+}
 </script>
 </body>
 </html>

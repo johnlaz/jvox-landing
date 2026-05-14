@@ -1,0 +1,23 @@
+{
+  "id": "/",
+  "name": "J-VOX — Every Person Deserves a Voice",
+  "short_name": "J-VOX",
+  "description": "J-VOX AAC: AI-powered Augmentative and Alternative Communication for non-verbal individuals.",
+  "lang": "en-US",
+  "dir": "ltr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "theme_color": "#080a0d",
+  "background_color": "#080a0d",
+  "categories": ["medical", "accessibility", "education", "health"],
+  "prefer_related_applications": false,
+  "icons": [
+    { "src": "./assets/jvox_icon.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./assets/jvox_icon.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "./assets/jvox_icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./assets/jvox_icon.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
