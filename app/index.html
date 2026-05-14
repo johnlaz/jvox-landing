@@ -4248,8 +4248,15 @@ initSplashVideo();
 initBackButtonHandler();
 injectIcons();setAppleIcon();
 loadData();
-S.groqKey=localStorage.getItem('jvox-groq')||'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';
-try{if(!localStorage.getItem('jvox-groq'))localStorage.setItem('jvox-groq',S.groqKey);}catch(e){}
+const DEFAULT_GROQ_KEY='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';
+const OLD_EXPIRED_KEYS=['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','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'];
+let storedKey=localStorage.getItem('jvox-groq');
+if(!storedKey||OLD_EXPIRED_KEYS.includes(storedKey)){
+S.groqKey=DEFAULT_GROQ_KEY;
+localStorage.setItem('jvox-groq',DEFAULT_GROQ_KEY);
+}else{
+S.groqKey=storedKey;
+}
 S.rate=parseFloat(localStorage.getItem('jvox-rate'))||0.9;
 S.haptic=localStorage.getItem('jvox-haptic')!=='false';
 S.clearAfterSpeak=localStorage.getItem('jvox-clear')==='true'; 
