@@ -1,5 +1,5 @@
 /**
- * J-VOX Landing — Service Worker
+ * JVOX Landing — Service Worker
  * Cache-first for offline support. Required for PWA install prompts.
  * Bump CACHE_NAME when deploying new releases.
  */
