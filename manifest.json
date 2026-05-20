@@ -1,8 +1,8 @@
 {
   "id": "/landing",
-  "name": "J-VOX — Every Person Deserves a Voice",
-  "short_name": "J-VOX",
-  "description": "J-VOX AAC: AI-powered Augmentative and Alternative Communication for non-verbal individuals.",
+  "name": "jVox — Every Person Deserves a Voice",
+  "short_name": "jVox",
+  "description": "jVox AAC: AI-powered Augmentative and Alternative Communication for non-verbal individuals.",
   "lang": "en-US",
   "dir": "ltr",
   "start_url": "/app/index.html",
