@@ -1,7 +1,7 @@
 {
   "id": "/app/",
-  "name": "J-VOX AAC",
-  "short_name": "J-VOX",
+  "name": "jVox AAC",
+  "short_name": "jVox",
   "description": "J-VOX is a full-featured AAC app built for non-verbal individuals and their families. Speak through personalized phrase boards, an Adaptive Expression engine that refines your words before they're spoken, an Environmentally Aware Voice that surfaces the right phrases at the right moment, and sensory regulation tools — all offline-capable and installed to your home screen.",
   "lang": "en-US",
   "dir": "ltr",
@@ -33,7 +33,7 @@
       "sizes": "1080x1920",
       "type": "image/jpeg",
       "form_factor": "narrow",
-      "label": "J-VOX AAC — Welcome screen"
+      "label": "jVox AAC — Welcome screen"
     },
     {
       "src": "./screenshot-categories.jpg",
@@ -68,12 +68,12 @@
       "sizes": "1280x800",
       "type": "image/jpeg",
       "form_factor": "wide",
-      "label": "J-VOX AAC — Full-featured AAC on any device"
+      "label": "jVox AAC — Full-featured AAC on any device"
     }
   ],
   "shortcuts": [
     {
-      "name": "Open J-VOX",
+      "name": "Open jVox",
       "short_name": "Speak",
       "description": "Open the communication board",
       "url": "./index.html",
