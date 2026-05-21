@@ -5,7 +5,7 @@
   "description": "jVox AAC: AI-powered Augmentative and Alternative Communication for non-verbal individuals.",
   "lang": "en-US",
   "dir": "ltr",
-  "start_url": "/app/index.html",
+  "start_url": "/index.html",
   "scope": "/",
   "display": "browser",
   "theme_color": "#f7f4f0",
