@@ -4,7 +4,7 @@
  * Bump CACHE_NAME when deploying new releases to force clients to refresh.
  */
 
-const CACHE_NAME = 'jvox-v3.4';
+const CACHE_NAME = 'jvox-v4';
 
 const PRECACHE_URLS = [
   './index.html',
