@@ -64,11 +64,6 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Don't intercept /app/ — let the app's own SW handle it
-  if (url.pathname.startsWith('/app/') || url.pathname.includes('/app/')) {
-    return;
-  }
-
   // Cache-first for everything else
   event.respondWith(
     caches.match(event.request).then(cached => {
