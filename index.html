@@ -1553,9 +1553,12 @@ footer {
   position: fixed;
   inset: 0;
   z-index: 200;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: 24px;
+  padding: 16px;
+  padding-top: max(16px, env(safe-area-inset-top));
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   background: rgba(44,33,24,0.55);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
@@ -1568,8 +1571,9 @@ footer {
   border-radius: 20px;
   width: 100%;
   max-width: 480px;
+  margin: auto;
   box-shadow: 0 24px 64px rgba(44,33,24,0.22), 0 2px 8px rgba(44,33,24,0.08);
-  overflow: hidden;
+  overflow: visible;
   animation: co-rise 0.3s cubic-bezier(0.34,1.56,0.64,1);
   position: relative;
 }
@@ -1580,6 +1584,7 @@ footer {
   background: linear-gradient(135deg, var(--terra) 0%, #9e4d31 100%);
   padding: 28px 32px 24px;
   position: relative;
+  border-radius: 20px 20px 0 0;
 }
 .contact-modal-header h2 {
   font-family: var(--font-serif);
@@ -1610,6 +1615,7 @@ footer {
 
 .contact-modal-body {
   padding: 28px 32px 32px;
+  border-radius: 0 0 20px 20px;
 }
 
 .cf-group {
