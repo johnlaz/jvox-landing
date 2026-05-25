@@ -1546,6 +1546,207 @@ footer {
 .ss-nav-dots { display: flex; gap: 6px; align-items: center; }
 .ss-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: background 0.2s; }
 .ss-dot.active { background: #fff; }
+
+/* ── CONTACT MODAL ── */
+.contact-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(44,33,24,0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.contact-overlay.open { display: flex; animation: co-fade 0.25s ease; }
+@keyframes co-fade { from { opacity:0; } to { opacity:1; } }
+
+.contact-modal {
+  background: var(--surface);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 24px 64px rgba(44,33,24,0.22), 0 2px 8px rgba(44,33,24,0.08);
+  overflow: hidden;
+  animation: co-rise 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  position: relative;
+}
+@keyframes co-rise { from { transform:translateY(28px);opacity:0; } to { transform:translateY(0);opacity:1; } }
+[data-theme="dark"] .contact-modal { background: var(--surface); border: 1px solid var(--border); }
+
+.contact-modal-header {
+  background: linear-gradient(135deg, var(--terra) 0%, #9e4d31 100%);
+  padding: 28px 32px 24px;
+  position: relative;
+}
+.contact-modal-header h2 {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 4px;
+  line-height: 1.2;
+}
+.contact-modal-header p {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.78);
+  margin: 0;
+  line-height: 1.45;
+}
+.contact-modal-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 32px; height: 32px;
+  background: rgba(255,255,255,0.18);
+  border: none; border-radius: 50%;
+  color: #fff; font-size: 1.1rem;
+  cursor: pointer; display: flex;
+  align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.contact-modal-close:hover { background: rgba(255,255,255,0.32); }
+
+.contact-modal-body {
+  padding: 28px 32px 32px;
+}
+
+.cf-group {
+  margin-bottom: 18px;
+}
+.cf-group label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text2);
+  margin-bottom: 7px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.cf-group input,
+.cf-group select,
+.cf-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 0.97rem;
+  color: var(--text);
+  font-family: var(--font-sans);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  resize: none;
+}
+.cf-group input:focus,
+.cf-group select:focus,
+.cf-group textarea:focus {
+  border-color: var(--terra);
+  box-shadow: 0 0 0 3px var(--terra-light);
+}
+[data-theme="dark"] .cf-group input,
+[data-theme="dark"] .cf-group select,
+[data-theme="dark"] .cf-group textarea {
+  background: var(--bg3);
+}
+.cf-group textarea { height: 110px; }
+
+.cf-row { display: flex; gap: 14px; }
+.cf-row .cf-group { flex: 1; }
+
+.cf-type-chips {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.cf-chip {
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 7px 16px;
+  font-size: 0.84rem;
+  color: var(--text2);
+  cursor: pointer;
+  background: var(--bg2);
+  transition: all 0.18s;
+  user-select: none;
+  font-family: var(--font-sans);
+}
+.cf-chip:hover { border-color: var(--terra); color: var(--terra); }
+.cf-chip.selected {
+  background: var(--terra);
+  border-color: var(--terra);
+  color: #fff;
+  font-weight: 600;
+}
+
+.cf-submit {
+  width: 100%;
+  margin-top: 22px;
+  padding: 14px;
+  background: var(--terra);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  box-shadow: 0 4px 16px var(--terra-glow);
+  transition: all 0.22s;
+  letter-spacing: 0.02em;
+}
+.cf-submit:hover:not(:disabled) { background: #9e4d31; transform: translateY(-1px); box-shadow: 0 6px 20px var(--terra-glow); }
+.cf-submit:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+
+.cf-success {
+  text-align: center;
+  padding: 36px 24px 28px;
+  display: none;
+}
+.cf-success-icon {
+  font-size: 3rem;
+  margin-bottom: 14px;
+}
+.cf-success h3 {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  color: var(--text);
+  margin: 0 0 10px;
+}
+.cf-success p {
+  color: var(--text2);
+  font-size: 0.93rem;
+  line-height: 1.55;
+  margin: 0 0 22px;
+}
+.cf-success-close {
+  padding: 11px 32px;
+  background: var(--terra);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: background 0.2s;
+}
+.cf-success-close:hover { background: #9e4d31; }
+
+.cf-error-msg {
+  font-size: 0.82rem;
+  color: #c0392b;
+  margin-top: 18px;
+  text-align: center;
+  display: none;
+}
+
+@media (max-width: 520px) {
+  .contact-modal-header { padding: 22px 20px 18px; }
+  .contact-modal-body { padding: 20px 20px 24px; }
+  .cf-row { flex-direction: column; gap: 0; }
+}
+
 </style>
 </head>
 <body>
@@ -1561,6 +1762,7 @@ footer {
     <li><a href="#pricing" onclick="closeMobileMenu()">Plans</a></li>
     <li><a href="#" onclick="showFoundation();closeMobileMenu();return false;">Foundation</a></li>
     <li><a href="#" onclick="showImpact();closeMobileMenu();return false;">Global Impact</a></li>
+    <li><a href="#" onclick="openContactModal();closeMobileMenu();return false;">✉ Contact Us</a></li>
   </ul>
   <a href="https://app.jvox.org/" class="mobile-menu-cta" onclick="track('launch_clicks')">↗ Open jVox Free</a>
 </div>
@@ -1582,6 +1784,7 @@ footer {
     <li><a href="#pricing">Plans</a></li>
     <li><a href="#" onclick="showFoundation();return false;">Foundation</a></li>
     <li><a href="#" onclick="showImpact();return false;">Global Impact</a></li>
+    <li><a href="#" onclick="openContactModal();return false;">Contact</a></li>
     <li><a href="https://app.jvox.org/" class="nav-cta" onclick="track('launch_clicks')">↗ Launch App</a></li>
   </ul>
   <div class="nav-right">
@@ -2293,6 +2496,99 @@ function ssSlide(dir) { _ssIndex = (_ssIndex + dir + _ssImages.length) % _ssImag
 function updateSSDots() { document.querySelectorAll('.ss-dot').forEach(function(d, i) { d.classList.toggle('active', i === _ssIndex); }); }
 function closeSS() { document.getElementById('ssOverlay').classList.remove('open'); document.body.style.overflow = ''; }
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closeSS(); } });
+
+/* ── CONTACT MODAL ── */
+let cfSelectedType = '';
+
+function openContactModal() {
+  const overlay = document.getElementById('contactOverlay');
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  // Reset to form view
+  document.getElementById('contactForm').style.display = '';
+  document.getElementById('contactSuccess').style.display = 'none';
+  document.getElementById('cf-error').style.display = 'none';
+  document.getElementById('cf-submit-btn').disabled = false;
+  document.getElementById('cf-submit-btn').textContent = 'Send Message →';
+  track('contact_open');
+  setTimeout(() => document.getElementById('cf-name').focus(), 300);
+}
+
+function closeContactModal() {
+  const overlay = document.getElementById('contactOverlay');
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Chip selection
+document.querySelectorAll('.cf-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.cf-chip').forEach(c => c.classList.remove('selected'));
+    chip.classList.add('selected');
+    cfSelectedType = chip.dataset.val;
+  });
+});
+
+// Close on backdrop click
+document.getElementById('contactOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeContactModal();
+});
+
+// Escape key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('contactOverlay').classList.contains('open')) {
+    closeContactModal();
+  }
+});
+
+async function submitContactForm() {
+  const name    = document.getElementById('cf-name').value.trim();
+  const email   = document.getElementById('cf-email').value.trim();
+  const message = document.getElementById('cf-message').value.trim();
+  const errEl   = document.getElementById('cf-error');
+  const btn     = document.getElementById('cf-submit-btn');
+
+  errEl.style.display = 'none';
+
+  if (!email || !message) {
+    errEl.textContent = 'Please fill in your email and message before sending.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  try {
+    const body = [
+      `Name: ${name || '(not provided)'}`,
+      `Email: ${email}`,
+      `Type: ${cfSelectedType || 'General'}`,
+      '',
+      message
+    ].join('\n');
+
+    const res = await fetch('https://formsubmit.co/ajax/hello@jvox.org', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ name, email, _subject: `jVox Contact: ${cfSelectedType || 'General'}`, message: body, _captcha: 'false' })
+    });
+
+    if (res.ok) {
+      document.getElementById('contactForm').style.display = 'none';
+      document.getElementById('contactSuccess').style.display = 'block';
+      track('contact_sent');
+    } else {
+      throw new Error('non-ok');
+    }
+  } catch {
+    btn.disabled = false;
+    btn.textContent = 'Send Message →';
+    errEl.textContent = 'Something went wrong. Please try again or email hello@jvox.org directly.';
+    errEl.style.display = 'block';
+  }
+}
+
 </script>
 <!-- FOUNDATION VIEW — interactive AAC demo dedicated page -->
 <div id="foundationView" role="region" aria-label="The Foundation">
@@ -2574,6 +2870,53 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { clo
   </div>
 
 </div><!-- end #impactView -->
+
+
+<!-- CONTACT MODAL -->
+<div class="contact-overlay" id="contactOverlay" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+  <div class="contact-modal" id="contactModal">
+    <div class="contact-modal-header">
+      <h2 id="contactModalTitle">Get in Touch 👋</h2>
+      <p>We'd love to hear from you — feedback, questions, partnership ideas, or just to say hello.</p>
+      <button class="contact-modal-close" onclick="closeContactModal()" aria-label="Close contact form">✕</button>
+    </div>
+    <div class="contact-modal-body" id="contactForm">
+      <div class="cf-row">
+        <div class="cf-group">
+          <label for="cf-name">Your Name</label>
+          <input type="text" id="cf-name" placeholder="Jane Smith" autocomplete="name">
+        </div>
+        <div class="cf-group">
+          <label for="cf-email">Email Address</label>
+          <input type="email" id="cf-email" placeholder="you@example.com" autocomplete="email">
+        </div>
+      </div>
+      <div class="cf-group">
+        <label>What brings you here?</label>
+        <div class="cf-type-chips" id="cf-chips">
+          <button type="button" class="cf-chip" data-val="General Feedback">💬 Feedback</button>
+          <button type="button" class="cf-chip" data-val="Feature Request">✨ Feature Request</button>
+          <button type="button" class="cf-chip" data-val="Partnership">🤝 Partnership</button>
+          <button type="button" class="cf-chip" data-val="Press / Media">📰 Press</button>
+          <button type="button" class="cf-chip" data-val="Support">🛠 Support</button>
+          <button type="button" class="cf-chip" data-val="Other">💡 Other</button>
+        </div>
+      </div>
+      <div class="cf-group">
+        <label for="cf-message">Message</label>
+        <textarea id="cf-message" placeholder="Tell us what's on your mind…"></textarea>
+      </div>
+      <button class="cf-submit" id="cf-submit-btn" onclick="submitContactForm()">Send Message →</button>
+      <p class="cf-error-msg" id="cf-error">Something went wrong. Please try again or email us directly at <strong>hello@jvox.org</strong>.</p>
+    </div>
+    <div class="cf-success" id="contactSuccess">
+      <div class="cf-success-icon">🌟</div>
+      <h3>Message Sent!</h3>
+      <p>Thank you for reaching out. We read every message and will get back to you soon.</p>
+      <button class="cf-success-close" onclick="closeContactModal()">Close</button>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
