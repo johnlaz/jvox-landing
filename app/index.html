@@ -4697,13 +4697,7 @@ initSplashVideo();
 initBackButtonHandler();
 injectIcons();setAppleIcon();
 loadData();
-const OLD_EXPIRED_KEYS=['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','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','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'];
-let storedKey=localStorage.getItem('jvox-groq');
-if(storedKey&&OLD_EXPIRED_KEYS.includes(storedKey)){
-localStorage.removeItem('jvox-groq');
-storedKey='';
-}
-S.groqKey=storedKey||'';
+S.groqKey=localStorage.getItem('jvox-groq')||'';
 S.rate=parseFloat(localStorage.getItem('jvox-rate'))||0.9;
 S.haptic=localStorage.getItem('jvox-haptic')!=='false';
 S.clearAfterSpeak=localStorage.getItem('jvox-clear')==='true'; 
