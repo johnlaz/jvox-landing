@@ -1409,7 +1409,7 @@ nav {
 }
 .tier-free-tag { background: var(--sage-light); color: var(--sage); border: 1px solid rgba(74,124,107,0.25); }
 .tier-aura-tag { background: var(--terra-light); color: var(--terra); border: 1px solid rgba(176,90,58,0.22); }
-.card-preview-hint { margin-top: 12px; font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; color: var(--terra); font-weight: 500; opacity: 0; transition: opacity 0.2s; }
+.card-preview-hint { margin-top: 12px; font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; color: var(--terra); font-weight: 500; opacity: 0.55; transition: opacity 0.2s; }
 .feature-card:hover .card-preview-hint, .feature-card:focus .card-preview-hint { opacity: 1; }
 @media (max-width: 768px) {
   .features-grid { grid-template-columns: 1fr; }
@@ -1769,6 +1769,7 @@ footer {
     <li><a href="#" onclick="showFoundation();closeMobileMenu();return false;">Foundation</a></li>
     <li><a href="#" onclick="showImpact();closeMobileMenu();return false;">Global Impact</a></li>
     <li><a href="#" onclick="openContactModal();closeMobileMenu();return false;">✉ Contact Us</a></li>
+    <li id="menuApkItem" style="display:none;"><a href="assets/jvox.apk" download="jvox.apk" onclick="track('install_clicks');closeMobileMenu();">⬇ Download Android APK</a></li>
   </ul>
   <a href="https://app.jvox.org/" class="mobile-menu-cta" onclick="track('launch_clicks')">↗ Open jVox Free</a>
 </div>
@@ -2006,7 +2007,7 @@ footer {
       <div class="tier-badge">Coming Soon</div>
       <div class="tier-name">✦ Aura Access</div>
       <div class="tier-price" style="font-size:1.6rem;line-height:1.25;">Free During<br>Early Access</div>
-      <div class="tier-price-note">AI features unlocked at no cost while we're in beta — no API key, no setup.</div>
+      <div class="tier-price-note">Free API key required — all AI features open at no cost until formal launch.</div>
       <div class="tier-desc">Aura Mode makes jVox truly intelligent. Try every AI feature free right now — we're in active development and your feedback shapes what we build next.</div>
       <ul class="tier-features" aria-label="Aura plan features">
         <li><span class="tier-check" aria-hidden="true">✓</span><span>Everything in Core, plus…</span></li>
@@ -2017,12 +2018,12 @@ footer {
         <li><span class="tier-check" aria-hidden="true">✓</span><span><span class="tier-feature-label">Magic Wand AI</span> <span class="tier-feature-desc">— sentence refinement in one tap</span></span></li>
         <li><span class="tier-check" aria-hidden="true">✓</span><span><span class="tier-feature-label">Situation Cards</span> <span class="tier-feature-desc">— custom phrase packs for any context</span></span></li>
         <li><span class="tier-check" aria-hidden="true">✓</span><span><span class="tier-feature-label">Regulate &amp; Zen Mode</span> <span class="tier-feature-desc">— calm first, communicate second</span></span></li>
-        <li><span class="tier-check" aria-hidden="true">✓</span><span>AI usage included — no API key needed</span></li>
+        <li><span class="tier-check" aria-hidden="true">✓</span><span>Free API key required — AI usage open until formal launch</span></li>
       </ul>
     </div>
   </div>
   <p class="reveal" style="text-align:center;margin-top:28px;color:var(--text3);font-size:0.82rem;letter-spacing:0.05em;font-family:'DM Mono',monospace;max-width:600px;margin-left:auto;margin-right:auto;line-height:1.7;font-weight:400;">
-    Until Aura Access formally launches, all AI features are available completely free — no API key required. Just open the app and explore.
+    A free Groq API key is required to access AI features — it takes under two minutes to obtain and costs nothing. All AI features remain open and free until formal launch.
   </p>
 </div>
 </section>
@@ -2067,7 +2068,7 @@ footer {
     <p class="cta-sub">jVox installs on any device in seconds and is completely free to start — no sign-up, no credit card, no barriers.</p>
     <div class="hero-actions" style="justify-content:center">
       <a href="https://app.jvox.org/" class="btn-primary" onclick="track('launch_clicks')">↗ Open jVox Free</a>
-      <a href="assets/jvox.apk" download="jvox.apk" class="btn-ghost" id="installBtn" onclick="track('install_clicks')">⬇ Install as App</a>
+      <a href="assets/jvox.apk" download="jvox.apk" class="btn-ghost" id="installBtn" onclick="track('install_clicks')" style="display:none;">⬇ Install Android APK</a>
     </div>
   </div>
 </section>
@@ -2107,6 +2108,17 @@ footer {
 </div>
 
 <script>
+/* ── ANDROID APK INSTALL VISIBILITY ── */
+(function(){
+  const isAndroid = /android/i.test(navigator.userAgent);
+  if (isAndroid) {
+    const btn = document.getElementById('installBtn');
+    const menuItem = document.getElementById('menuApkItem');
+    if (btn) btn.style.display = '';
+    if (menuItem) menuItem.style.display = '';
+  }
+})();
+
 /* ── FOUNDATION VIEW ── */
 function showFoundation() {
   closeMobileMenu();
@@ -2443,7 +2455,7 @@ if (!PLAY_STORE_URL && !APP_STORE_URL) {
       installBtn.addEventListener("click", e => {
         e.preventDefault(); track("install_clicks");
         installBtn.textContent = "⏳ APK coming soon"; installBtn.style.opacity = "0.6";
-        setTimeout(() => { installBtn.textContent = "⬇ Install as App"; installBtn.style.opacity = ""; }, 2400);
+        setTimeout(() => { installBtn.textContent = "⬇ Install Android APK"; installBtn.style.opacity = ""; }, 2400);
       });
     }
   }).catch(() => {});
