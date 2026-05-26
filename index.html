@@ -2671,7 +2671,10 @@ function openContactModal() {
   document.getElementById('cf-error').style.display = 'none';
   document.getElementById('cf-submit-btn').disabled = false;
   document.getElementById('cf-submit-btn').textContent = 'Send Message →';
+  cfSelectedType = '';
+  document.querySelectorAll('.cf-chip').forEach(c => c.classList.remove('selected'));
   track('contact_open');
+  bindChips();
   setTimeout(() => document.getElementById('cf-name').focus(), 300);
 }
 
@@ -2681,14 +2684,35 @@ function closeContactModal() {
   document.body.style.overflow = '';
 }
 
-// Chip selection
-document.querySelectorAll('.cf-chip').forEach(chip => {
-  chip.addEventListener('click', () => {
-    document.querySelectorAll('.cf-chip').forEach(c => c.classList.remove('selected'));
-    chip.classList.add('selected');
-    cfSelectedType = chip.dataset.val;
+// Chip selection — bound lazily on first open so the DOM exists
+let cfChipsBound = false;
+function bindChips() {
+  if (cfChipsBound) return;
+  cfChipsBound = true;
+  document.querySelectorAll('.cf-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.cf-chip').forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+      cfSelectedType = chip.dataset.val;
+      // Auto-populate a placeholder in the message textarea based on chip
+      const ta = document.getElementById('cf-message');
+      const prompts = {
+        'General Feedback': 'I wanted to share some feedback about jVox…',
+        'Feature Request': 'It would be really helpful if jVox could…',
+        'Partnership': 'I’d love to explore a partnership opportunity…',
+        'Press / Media': 'I’m reaching out regarding a press/media inquiry…',
+        'Support': 'I’m having an issue with…',
+        'Other': ''
+      };
+      if (!ta.value || Object.values(prompts).includes(ta.value)) {
+        ta.value = prompts[chip.dataset.val] || '';
+        ta.focus();
+        // Place cursor at end
+        ta.setSelectionRange(ta.value.length, ta.value.length);
+      }
+    });
   });
-});
+}
 
 // Close on backdrop click
 document.getElementById('contactOverlay').addEventListener('click', function(e) {
