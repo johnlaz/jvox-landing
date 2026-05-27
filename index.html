@@ -1506,54 +1506,27 @@ nav {
 ═══════════════════════════════════════ */
 .photo-break {
   width: 100%;
-  overflow: hidden; position: relative;
-  background: var(--bg);
-}
-.photo-break-panel {
-  position: relative;
-  height: clamp(360px, 42vw, 580px);
-  overflow: hidden;
-}
-/* Top/bottom fades */
-.photo-break::before,
-.photo-break::after {
-  content: ''; position: absolute; left: 0; right: 0; z-index: 3; pointer-events: none;
-}
-.photo-break::before { top: 0; height: 48px; background: linear-gradient(to bottom, var(--bg2), transparent); }
-.photo-break::after  { bottom: 0; height: 80px; background: linear-gradient(to top, var(--bg), transparent); }
-/* Left/right edge fades */
-.photo-break-panel::before {
-  content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 80px; z-index: 2;
-  background: linear-gradient(to right, var(--bg2), transparent); pointer-events: none;
-}
-.photo-break-panel::after {
-  content: ''; position: absolute; top: 0; bottom: 0; right: 0; width: 80px; z-index: 2;
-  background: linear-gradient(to left, var(--bg), transparent); pointer-events: none;
+  background: var(--bg2);
+  padding: 40px 0 32px;
+  text-align: center;
 }
 .photo-break-img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  filter: saturate(0.88) brightness(1.01);
   display: block;
+  margin: 0 auto;
+  max-width: 860px;
+  width: 92%;
+  height: auto;
+  border-radius: var(--r-lg);
+  box-shadow: 0 8px 48px rgba(44,33,24,0.13);
+  filter: saturate(0.88) brightness(1.01);
 }
-/* Anchor from top so faces stay visible and bottom content (wave, device) shows */
-.photo-break-img.classroom { object-position: center top; }
-.photo-break-img.park      { object-position: center top; }
-.photo-break-caption {
-  position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
-  font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.2em;
-  text-transform: uppercase; color: var(--text3);
-  white-space: nowrap; pointer-events: none; z-index: 4;
-}
-[data-theme="dark"] .photo-break-img { filter: saturate(0.7) brightness(0.78); }
+[data-theme="dark"] .photo-break-img { filter: saturate(0.72) brightness(0.80); }
 @media (max-width: 768px) {
-  /* aspect-ratio drives height naturally from image proportions */
-  .photo-break-panel { height: auto; aspect-ratio: 16/9; }
-  .photo-break-caption { display: none; }
+  .photo-break { padding: 28px 0 24px; }
+  .photo-break-img { width: 96%; border-radius: var(--r-md); }
 }
-@media (max-width: 480px) {
-  .photo-break-panel { aspect-ratio: 4/3; }
-}
+/* Keep .photo-break-panel as a passthrough wrapper — no sizing needed */
+.photo-break-panel { display: contents; }
 
 /* ═══════════════════════════════════════
    MISSION PHOTO
@@ -2229,10 +2202,8 @@ footer {
 </section>
 
 <!-- PHOTO BREAK: Classroom -->
-<div class="photo-break photo-break-single reveal" aria-hidden="true">
-  <div class="photo-break-panel">
-    <img src="assets/child_classroom.png" alt="" class="photo-break-img classroom">
-  </div>
+<div class="photo-break reveal" aria-hidden="true">
+  <img src="assets/child_classroom.png" alt="" class="photo-break-img">
 </div>
 
 <!-- FEATURES -->
@@ -3073,6 +3044,11 @@ async function submitContactForm() {
         </div>
       </div>
 
+      <!-- Park photo -->
+      <div class="photo-break" aria-hidden="true" style="background:transparent;padding:32px 0 8px;">
+        <img src="assets/child_park.png" alt="" class="photo-break-img">
+      </div>
+
       <!-- Magic Wand CTA card -->
       <div class="foundation-cta-card">
         <div class="foundation-cta-card-inner">
@@ -3158,11 +3134,6 @@ async function submitContactForm() {
   </div>
 
   <!-- Full Research Data -->
-  <div class="photo-break photo-break-single" aria-hidden="true" style="margin:0;">
-    <div class="photo-break-panel">
-      <img src="assets/child_park.png" alt="" class="photo-break-img park">
-    </div>
-  </div>
   <div class="impact-data-section">
     <div class="section-wrap">
       <div class="impact-stats-intro impact-reveal" style="margin-bottom:40px;">
