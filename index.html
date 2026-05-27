@@ -1884,6 +1884,194 @@ footer {
   .cf-row { flex-direction: column; gap: 0; }
 }
 
+/* ═══════════════════════════════════════════════════
+   FAQ VIEW — full-page in-app panel
+═══════════════════════════════════════════════════ */
+#faqView {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--bg);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+#faqView.active { display: block; }
+
+.faq-back-bar {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 10px 24px;
+  background: rgba(247,244,240,0.95);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border2);
+  gap: 10px;
+}
+[data-theme="dark"] .faq-back-bar { background: rgba(8,10,13,0.95); }
+.faq-back-bar .impact-back-btn { white-space: nowrap; }
+.faq-back-bar .btn-primary { padding: 9px 16px; font-size: 0.82rem; min-height: 38px; box-shadow: none; white-space: nowrap; }
+
+.faq-page-hero {
+  padding: 56px 24px 52px;
+  background: var(--bg);
+  position: relative; overflow: hidden; text-align: center;
+}
+@media (min-width: 768px) { .faq-page-hero { padding: 80px 24px 70px; } }
+.faq-page-hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(176,90,58,0.07) 0%, transparent 70%);
+}
+.faq-page-hero-inner { position: relative; z-index: 2; max-width: 680px; margin: 0 auto; }
+.faq-page-arc {
+  position: absolute; bottom: -1px; left: 0; right: 0; height: 60px;
+  background: var(--bg2); clip-path: ellipse(60% 100% at 50% 100%);
+  pointer-events: none;
+}
+
+.faq-body-section {
+  background: var(--bg2);
+  padding: 56px 0 80px;
+}
+.faq-wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Tab bar */
+.faq-tabs {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 44px;
+}
+.faq-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 20px;
+  border-radius: 100px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text2);
+  transition: all 0.22s;
+}
+.faq-tab:hover { border-color: var(--terra); color: var(--terra); background: var(--terra-light); }
+.faq-tab.active { background: var(--terra); border-color: var(--terra); color: #fff; }
+[data-theme="dark"] .faq-tab { background: transparent; border-color: var(--border); }
+[data-theme="dark"] .faq-tab.active { background: var(--terra); border-color: var(--terra); color: var(--bg); }
+
+/* Panel intro card */
+.faq-panel { display: none; }
+.faq-panel.active { display: block; }
+.faq-panel-intro {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: var(--terra-light);
+  border: 1px solid rgba(176,90,58,0.18);
+  border-radius: var(--r-lg);
+  padding: 20px 24px;
+  margin-bottom: 32px;
+}
+[data-theme="dark"] .faq-panel-intro { background: var(--terra-light); border-color: var(--terra-mid); }
+.faq-panel-intro-icon { font-size: 1.7rem; flex-shrink: 0; line-height: 1; margin-top: 2px; }
+.faq-panel-intro-title { font-size: 0.92rem; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+.faq-panel-intro-body { font-size: 0.84rem; color: var(--text2); line-height: 1.75; font-weight: 500; }
+[data-theme="dark"] .faq-panel-intro-title { color: var(--text); }
+[data-theme="dark"] .faq-panel-intro-body { font-weight: 300; }
+
+/* 2-col grid */
+.faq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 44px;
+  align-items: start;
+}
+@media (max-width: 640px) { .faq-grid { grid-template-columns: 1fr; } }
+
+/* Accordion items */
+.faq-item { border-top: 1px solid var(--border2); }
+.faq-item:last-child { border-bottom: 1px solid var(--border2); }
+.faq-q {
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 17px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.4;
+}
+.faq-q:hover .faq-qt { color: var(--terra); }
+.faq-qt { flex: 1; transition: color 0.2s; }
+.faq-ico {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid var(--terra-glow);
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--terra);
+  font-size: 0.72rem; font-weight: 700;
+  transition: all 0.25s;
+  background: transparent;
+  line-height: 1;
+}
+.faq-item.open .faq-ico { background: var(--terra); color: #fff; border-color: var(--terra); transform: rotate(45deg); }
+.faq-body { overflow: hidden; max-height: 0; transition: max-height 0.38s ease, padding 0.3s ease; padding: 0; }
+.faq-item.open .faq-body { max-height: 320px; padding-bottom: 18px; }
+.faq-a { font-size: 0.85rem; color: var(--text2); line-height: 1.85; font-weight: 500; }
+[data-theme="dark"] .faq-a { font-weight: 300; }
+.faq-a a { color: var(--terra); text-underline-offset: 3px; }
+
+/* Inline tags */
+.faq-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.63rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 100px;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.faq-tag-free    { background: rgba(74,124,107,0.12); color: #2d7a5e; }
+.faq-tag-ai      { background: var(--terra-mid); color: var(--terra); }
+.faq-tag-general { background: var(--sage-mid); color: var(--sage); }
+.faq-tag-partner { background: var(--blush-light); color: var(--blush); }
+[data-theme="dark"] .faq-tag-free    { background: rgba(74,124,107,0.18); color: #5ecfae; }
+[data-theme="dark"] .faq-tag-general { background: var(--sage-mid); color: var(--sage); }
+
+/* CTA strip */
+.faq-cta {
+  margin-top: 48px;
+  border-top: 1px solid var(--border2);
+  padding-top: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.faq-cta-text strong { color: var(--text); display: block; font-size: 1rem; margin-bottom: 3px; font-weight: 700; }
+.faq-cta-text { font-size: 0.86rem; color: var(--text2); }
+[data-theme="dark"] .faq-cta-text { font-weight: 300; }
+.faq-cta-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+
 </style>
 </head>
 <body>
@@ -1899,6 +2087,7 @@ footer {
     <li><a href="#pricing" onclick="closeMobileMenu()">Plans</a></li>
     <li><a href="#" onclick="showFoundation();closeMobileMenu();return false;">Foundation</a></li>
     <li><a href="#" onclick="showImpact();closeMobileMenu();return false;">Global Impact</a></li>
+    <li><a href="#" onclick="showFaq();closeMobileMenu();return false;">FAQ</a></li>
     <li><a href="#" onclick="openContactModal();closeMobileMenu();return false;">✉ Contact Us</a></li>
     <li id="menuApkItem" style="display:none;"><a href="assets/jvox.apk" download="jvox.apk" onclick="track('install_clicks');closeMobileMenu();">⬇ Download Android APK</a></li>
   </ul>
@@ -1922,6 +2111,7 @@ footer {
     <li><a href="#pricing">Plans</a></li>
     <li><a href="#" onclick="showFoundation();return false;">Foundation</a></li>
     <li><a href="#" onclick="showImpact();return false;">Global Impact</a></li>
+    <li><a href="#" onclick="showFaq();return false;">FAQ</a></li>
     <li><a href="#" onclick="openContactModal();return false;">Contact</a></li>
     <li><a href="https://app.jvox.org/" class="nav-cta" onclick="track('launch_clicks')">↗ Launch App</a></li>
   </ul>
@@ -2171,7 +2361,7 @@ footer {
 </div>
 </section>
 
-<!-- MISSION -->
+
 <section id="mission" aria-labelledby="mission-heading">
   <div class="mission-inner">
     <div class="mission-icon-display reveal">
@@ -2372,6 +2562,40 @@ function hideImpact() {
   closeMobileMenu();
 }
 
+/* ── FAQ TABS & ACCORDION ── */
+function faqTab(id, btn) {
+  document.querySelectorAll('.faq-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.faq-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('faqpanel-' + id).classList.add('active');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+}
+function faqToggle(btn) {
+  const item = btn.closest('.faq-item');
+  const panel = btn.closest('.faq-panel');
+  const wasOpen = item.classList.contains('open');
+  panel.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+function showFaq() {
+  closeMobileMenu();
+  const view = document.getElementById('faqView');
+  view.classList.add('active');
+  view.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+  history.pushState({ view: 'faq' }, '', '#faq');
+  // Reset to first tab
+  document.querySelectorAll('.faq-tab').forEach((t, i) => t.classList.toggle('active', i === 0));
+  document.querySelectorAll('.faq-panel').forEach((p, i) => p.classList.toggle('active', i === 0));
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  track('faq_visits');
+}
+function hideFaq() {
+  document.getElementById('faqView').classList.remove('active');
+  document.body.style.overflow = '';
+  closeMobileMenu();
+}
+
 /* ── ANALYTICS ── */
 const ANALYTICS_WORKER = 'https://jvox-analytics.johnlazzaro25.workers.dev';
 const track = (event) => { fetch(`${ANALYTICS_WORKER}/track?e=${event}`, { method: 'GET' }).catch(() => {}); };
@@ -2416,6 +2640,10 @@ window.addEventListener('popstate', e => {
   }
   if (document.getElementById('impactView').classList.contains('active')) {
     document.getElementById('impactView').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  if (document.getElementById('faqView').classList.contains('active')) {
+    document.getElementById('faqView').classList.remove('active');
     document.body.style.overflow = '';
   }
   closeMobileMenu();
@@ -3055,6 +3283,198 @@ async function submitContactForm() {
   </div>
 
 </div><!-- end #impactView -->
+
+
+<!-- FAQ VIEW -->
+<div id="faqView" role="region" aria-label="FAQ">
+
+  <div class="faq-back-bar">
+    <button class="impact-back-btn" onclick="hideFaq()">← Back to Home</button>
+    <div class="impact-back-brand"><span class="wm-j">j</span><span class="wm-vox">Vox</span></div>
+    <a href="https://app.jvox.org/" class="btn-primary" onclick="track('launch_clicks')">↗ Open jVox Free</a>
+  </div>
+
+  <div class="faq-page-hero">
+    <div class="faq-page-hero-inner">
+      <div class="impact-page-crumb"><span>jVox</span> · FAQ</div>
+      <h1 class="impact-page-title">Answers, not <em>jargon</em></h1>
+      <p class="impact-page-sub">Choose who you are — we've organized answers around what matters most to you.</p>
+    </div>
+    <div class="faq-page-arc" aria-hidden="true"></div>
+  </div>
+
+  <div class="faq-body-section">
+    <div class="faq-wrap">
+
+      <div class="faq-tabs">
+        <button class="faq-tab active" onclick="faqTab('families',this)">🏠 Families &amp; Caregivers</button>
+        <button class="faq-tab" onclick="faqTab('schools',this)">🏫 Schools &amp; Therapists</button>
+        <button class="faq-tab" onclick="faqTab('partners',this)">🤝 Partners &amp; Orgs</button>
+      </div>
+
+      <!-- PANEL: FAMILIES -->
+      <div class="faq-panel active" id="faqpanel-families">
+        <div class="faq-panel-intro">
+          <div class="faq-panel-intro-icon">🏠</div>
+          <div>
+            <div class="faq-panel-intro-title">For families, parents, and daily caregivers</div>
+            <div class="faq-panel-intro-body">jVox started as a father's tool for his own son. Everything here is designed around real daily life — at home, in the car, at the dinner table. No tech background required.</div>
+          </div>
+        </div>
+        <div class="faq-grid">
+          <div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="faqToggle(this)"><span class="faq-qt">Is jVox really free?</span><span class="faq-ico">+</span></button>
+              <div class="faq-body"><span class="faq-tag faq-tag-free">✦ Core</span><p class="faq-a">Yes — completely. The Core tier includes category boards, word builder, About Me profiles, and text-to-speech. No credit card, no sign-up, no time limit. Free means free, permanently.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="faqToggle(this)"><span class="faq-qt">What devices does jVox work on?</span><span class="faq-ico">+</span></button>
+              <div class="faq-body"><span class="faq-tag faq-tag-general">General</span><p class="faq-a">Any modern browser — iPhone, iPad, Android, Chromebook, Mac, or Windows PC. jVox installs to your home screen and works offline. No app store required.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="faqToggle(this)"><span class="faq-qt">Is my child's data private?</span><span class="faq-ico">+</span></button>
+              <div class="faq-body"><span class="faq-tag faq-tag-general">Privacy</span><p class="faq-a">Completely. All phrases, profiles, and settings live only on your device. No accounts, no cloud sync, no analytics tied to your family. Your child's words belong to your family.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="faqToggle(this)"><span class="faq-qt">Can I customize phrases for my child?</span><span class="faq-ico">+</span></button>
+              <div class="faq-body"><span class="faq-tag faq-tag-free">✦ Core</span><p class="faq-a">Yes — add, rename, or remove any phrase or category. Changes save instantly to your device. jVox includes 150+ phrases across 12 categories as a starting point, but every family's setup will look different.</p></div>
+            </div>
+          </div>
+          <div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="faqToggle(this)"><span class="faq-qt">Who is jVox built for?</span><span class="faq-ico">+</span></button>
+              <div class="faq-body"><span class="faq-tag faq-tag-general">General</span><p class="faq-a">Non-verbal and minimally verbal individuals of all ages — children with autism or developmental delays, adults with stroke-related aphasia or ALS, and anyone in a situation where speech is temporarily difficult.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="faqToggle(this)"><span class="faq-qt">What is the jVox Aura AI tier?</span><span class="faq-ico">+</span></button>
+              <div class="faq-body"><span class="faq-tag faq-tag-ai">✨ Aura</span><p class="faq-a">jVox Aura unlocks AI features: the Magic Wand sentence builder, Situation Cards, camera-based phrase scanning, ambient listening, Geo-Sense boards, and Zen Mode. Requires a free Groq API key — fully open during Early Access.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="faqToggle(this)"><span class="faq-qt">How do I get a Groq API key?</span><span class="faq-ico">+</span></button>
+              <div class="faq-body"><span class="faq-tag faq-tag-ai">✨ Aura</span><p class="faq-a">Visit <a href="https://console.groq.com" target="_blank" rel="noopener">console.groq.com</a>, create a free account, and generate a key — no payment info required. Takes under 2 minutes. Paste it into jVox settings and all AI features activate immediately.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="faqToggle(this)"><span class="faq-qt">Does jVox work without internet?</span><span class="faq-ico">+</span></button>
+              <div class="faq-body"><span class="faq-tag faq-tag-free">✦ Core</span><p class="faq-a">Core jVox features work fully offline once installed to your device. AI-powered Aura features require a brief connection, but all communication boards, word builder, and text-to-speech remain available without signal.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL: SCHOOLS & THERAPISTS -->
+      <div class="faq-panel" id="faqpanel-schools">
+        <div class="faq-panel-intro">
+          <div class="faq-panel-intro-icon">🏫</div>
+          <div>
+            <div class="faq-panel-intro-title">For SLPs, special ed teachers, OTs, and school administrators</div>
+            <div class="faq-panel-intro-body">jVox is designed to complement your work — not replace it. It runs on devices your students already have, requires no procurement, and can be customized per student in minutes.</div>
+          </div>
+        </div>
+        <div class="faq-grid">
+          <div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="faqToggle(this)"><span class="faq-qt">Can jVox be used in a classroom or therapy setting?</span><span class="faq-ico">+</span></button>
+              <div class="faq-body"><span class="faq-tag faq-tag-free">✦ Core</span><p class="faq-a">Yes. jVox runs on any school-issued or personal device — iPad, Android tablet, Chromebook, or laptop — with no app store installation. It works offline and requires no IT involvement for the Core tier.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="faqToggle(this)"><span class="faq-qt">Is there a cost for schools or districts?</span><span class="faq-ico">+</span></button>
+              <div class="faq-body"><span class="faq-tag faq-tag-free">✦ Core</span><p class="faq-a">The jVox Core tier is free for every user — students, therapists, and schools. No per-seat licenses, no district contracts, no procurement process. We're actively working with organizations to make AI features sustainable at no cost to schools.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="faqToggle(this)"><span class="faq-qt">Can vocabulary be customized per student?</span><span class="faq-ico">+</span></button>
+              <div class="faq-body"><span class="faq-tag faq-tag-free">✦ Core</span><p class="faq-a">Yes — each device has its own independent jVox configuration. An SLP can set up a student's specific phrases, categories, and About Me profile in minutes. Data never leaves the device, so each student's setup is fully isolated.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="faqToggle(this)"><span class="faq-qt">Does jVox support evidence-based AAC approaches?</span><span class="faq-ico">+</span></button>
+              <div class="faq-body"><span class="faq-tag faq-tag-general">Clinical</span><p class="faq-a">jVox is built around core vocabulary principles and category-based communication boards — consistent with established AAC methodology. We actively welcome input from SLPs and researchers to strengthen alignment with clinical best practices.</p></div>
+            </div>
+          </div>
+          <div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="faqToggle(this)"><span class="faq-qt">Is student data FERPA / COPPA compliant?</span><span class="faq-ico">+</span></button>
+              <div class="faq-body"><span class="faq-tag faq-tag-general">Privacy</span><p class="faq-a">jVox collects no student data — no accounts, no cloud storage, nothing transmitted off the device. Because nothing leaves the device, there is nothing to govern. We recommend confirming with your district's privacy officer for documentation purposes.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="faqToggle(this)"><span class="faq-qt">Can jVox be used alongside dedicated AAC devices?</span><span class="faq-ico">+</span></button>
+              <div class="faq-body"><span class="faq-tag faq-tag-general">Clinical</span><p class="faq-a">Absolutely. Many families use jVox as a portable backup to a dedicated SGD, or as a trial tool before committing to costly hardware. It's also commonly used by caregivers and teachers who don't have access to a student's primary device.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="faqToggle(this)"><span class="faq-qt">Can we pilot jVox with a group of students?</span><span class="faq-ico">+</span></button>
+              <div class="faq-body"><span class="faq-tag faq-tag-partner">Partnership</span><p class="faq-a">Yes — and we'd love to hear from you. We're actively building relationships with schools and therapy practices to gather real-world feedback. Contact us at <a href="mailto:hello@jvox.org">hello@jvox.org</a> to discuss a structured pilot or onboarding support.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="faqToggle(this)"><span class="faq-qt">Is training or professional development available?</span><span class="faq-ico">+</span></button>
+              <div class="faq-body"><span class="faq-tag faq-tag-partner">Partnership</span><p class="faq-a">Not yet formally — but we offer onboarding calls for therapy practices and schools that want guided jVox setup. Structured PD resources are on the roadmap. Reach out and let's talk about what your team needs.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL: PARTNERS & ORGS -->
+      <div class="faq-panel" id="faqpanel-partners">
+        <div class="faq-panel-intro">
+          <div class="faq-panel-intro-icon">🤝</div>
+          <div>
+            <div class="faq-panel-intro-title">For grant makers, nonprofits, researchers, first responders, and media</div>
+            <div class="faq-panel-intro-body">jVox is infrastructure, not a product. We're building toward a world where communication technology is as universal as emergency services — and we're looking for mission-aligned partners to get there.</div>
+          </div>
+        </div>
+        <div class="faq-grid">
+          <div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="faqToggle(this)"><span class="faq-qt">Is JVox.org a nonprofit?</span><span class="faq-ico">+</span></button>
+              <div class="faq-body"><span class="faq-tag faq-tag-general">Foundation</span><p class="faq-a">JVox.org is in pre-filing preparation for 501(c)(3) nonprofit status. The mission is to permanently remove cost as a barrier to communication technology. jVox will always have a free core — regardless of organizational structure.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="faqToggle(this)"><span class="faq-qt">What grant or funding opportunities are you pursuing?</span><span class="faq-ico">+</span></button>
+              <div class="faq-body"><span class="faq-tag faq-tag-partner">Funding</span><p class="faq-a">jVox is actively researching federal disability tech grants (NIDILRR, HRSA), military and VA communication programs, and private foundation funding. jVox's documented alignment with the WHO's 90% access gap makes it a strong candidate. If you fund in this space, we'd like to talk.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="faqToggle(this)"><span class="faq-qt">Can jVox be used by first responders or military?</span><span class="faq-ico">+</span></button>
+              <div class="faq-body"><span class="faq-tag faq-tag-general">Use Cases</span><p class="faq-a">Yes. jVox is designed for the full Circle of Care — family, medicine, law enforcement, military, and emergency response. Any first responder encountering a non-verbal individual can pull up jVox instantly on their own device, without accounts or setup.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="faqToggle(this)"><span class="faq-qt">Are you open to research partnerships?</span><span class="faq-ico">+</span></button>
+              <div class="faq-body"><span class="faq-tag faq-tag-partner">Research</span><p class="faq-a">Actively yes. jVox welcomes collaboration with university researchers, SLP programs, and disability studies departments. Outcomes data, usability studies, and clinical validation all strengthen jVox's mission. Contact us to explore what's possible.</p></div>
+            </div>
+          </div>
+          <div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="faqToggle(this)"><span class="faq-qt">How is jVox different from commercial AAC apps?</span><span class="faq-ico">+</span></button>
+              <div class="faq-body"><span class="faq-tag faq-tag-general">Differentiation</span><p class="faq-a">Commercial AAC apps typically cost $200–$300 upfront, run on closed ecosystems, and treat communication as a product. jVox treats it as a human right. No app store gatekeeping. No subscriptions. Works offline on any device the user already owns.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="faqToggle(this)"><span class="faq-qt">Can jVox be white-labeled or integrated?</span><span class="faq-ico">+</span></button>
+              <div class="faq-body"><span class="faq-tag faq-tag-partner">Partnership</span><p class="faq-a">jVox is open to conversations about licensing, embedding, or co-development for mission-aligned organizations — hospitals, school networks, VA facilities, and similar. Contact us at <a href="mailto:hello@jvox.org">hello@jvox.org</a> to discuss scope and terms.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="faqToggle(this)"><span class="faq-qt">I'm a journalist or researcher — who do I contact?</span><span class="faq-ico">+</span></button>
+              <div class="faq-body"><span class="faq-tag faq-tag-partner">Media</span><p class="faq-a">Email <a href="mailto:hello@jvox.org">hello@jvox.org</a> with Press or Research in the subject line. We're happy to provide demos, data, interviews, or background on jVox's origin and mission.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" onclick="faqToggle(this)"><span class="faq-qt">How can my organization support jVox?</span><span class="faq-ico">+</span></button>
+              <div class="faq-body"><span class="faq-tag faq-tag-partner">Partnership</span><p class="faq-a">There are several ways — financial sponsorship, in-kind technical support, structured pilots, or simply spreading the word. We're building a network of mission-aligned partners. Reach out at <a href="mailto:hello@jvox.org">hello@jvox.org</a>.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA strip -->
+      <div class="faq-cta">
+        <div class="faq-cta-text">
+          <strong>Still have questions?</strong>
+          We read every message and respond personally.
+        </div>
+        <div class="faq-cta-btns">
+          <a href="https://app.jvox.org/" class="btn-primary" onclick="track('launch_clicks')">↗ Try jVox Free</a>
+          <button class="btn-ghost" onclick="hideFaq();openContactModal();">✉ Contact Us</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- end #faqView -->
 
 
 <!-- CONTACT MODAL -->
