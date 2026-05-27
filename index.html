@@ -1507,26 +1507,31 @@ nav {
 .photo-break {
   width: 100%;
   background: var(--bg2);
-  padding: 40px 0 32px;
-  text-align: center;
+  padding: 32px 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+.photo-break-panel { display: contents; }
 .photo-break-img {
   display: block;
-  margin: 0 auto;
-  max-width: 860px;
-  width: 92%;
+  width: auto;
   height: auto;
+  max-width: min(860px, 92%);
+  max-height: 520px;
+  object-fit: contain;
   border-radius: var(--r-lg);
-  box-shadow: 0 8px 48px rgba(44,33,24,0.13);
+  box-shadow: 0 6px 40px rgba(44,33,24,0.12);
   filter: saturate(0.88) brightness(1.01);
 }
 [data-theme="dark"] .photo-break-img { filter: saturate(0.72) brightness(0.80); }
 @media (max-width: 768px) {
-  .photo-break { padding: 28px 0 24px; }
-  .photo-break-img { width: 96%; border-radius: var(--r-md); }
+  .photo-break { padding: 24px 16px; }
+  .photo-break-img { max-width: 96%; max-height: 360px; border-radius: var(--r-md); }
 }
-/* Keep .photo-break-panel as a passthrough wrapper — no sizing needed */
-.photo-break-panel { display: contents; }
+@media (max-width: 480px) {
+  .photo-break-img { max-height: 280px; }
+}
 
 /* ═══════════════════════════════════════
    MISSION PHOTO
@@ -3045,7 +3050,7 @@ async function submitContactForm() {
       </div>
 
       <!-- Park photo -->
-      <div class="photo-break" aria-hidden="true" style="background:transparent;padding:32px 0 8px;">
+      <div class="photo-break" aria-hidden="true">
         <img src="assets/child_park.png" alt="" class="photo-break-img">
       </div>
 
