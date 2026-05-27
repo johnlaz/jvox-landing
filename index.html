@@ -1512,7 +1512,7 @@ nav {
   grid-template-columns: 1fr 1fr;
 }
 .photo-break-panel {
-  position: relative; height: 600px; overflow: hidden;
+  position: relative; height: clamp(420px, 55vw, 680px); overflow: hidden;
 }
 /* Top/bottom section fades on the whole strip */
 .photo-break::before,
@@ -1545,9 +1545,10 @@ nav {
   filter: saturate(0.88) brightness(1.01);
   display: block;
 }
-/* Keep subjects (people) in frame at all panel widths */
-.photo-break-img.classroom { object-position: center 25%; }
-.photo-break-img.park      { object-position: center 20%; }
+/* Anchor from top — images have important content at the bottom (wave, device, table)
+   and faces near the top; top-anchored means neither end gets cropped first */
+.photo-break-img.classroom { object-position: center top; }
+.photo-break-img.park      { object-position: center top; }
 .photo-break-caption {
   position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
   font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.2em;
@@ -1555,13 +1556,10 @@ nav {
   white-space: nowrap; pointer-events: none; z-index: 4;
 }
 [data-theme="dark"] .photo-break-img { filter: saturate(0.7) brightness(0.78); }
-/* Tablet — still two columns but taller */
-@media (max-width: 1024px) and (min-width: 769px) {
-  .photo-break-panel { height: 520px; }
-}
 @media (max-width: 768px) {
   .photo-break { grid-template-columns: 1fr; }
-  .photo-break-panel { height: 420px; }
+  /* Single column — use aspect-ratio so height scales with width naturally */
+  .photo-break-panel { height: auto; aspect-ratio: 4/3; }
   .photo-break-panel:first-child::after,
   .photo-break-panel:last-child::before { display: none; }
   .photo-break-panel:first-child::after {
@@ -1570,9 +1568,6 @@ nav {
     display: block;
   }
   .photo-break-caption { display: none; }
-}
-@media (max-width: 480px) {
-  .photo-break-panel { height: 340px; }
 }
 
 /* ═══════════════════════════════════════
