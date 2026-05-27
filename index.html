@@ -1506,65 +1506,30 @@ nav {
 ═══════════════════════════════════════ */
 .photo-break {
   width: 100%;
-  overflow: hidden; position: relative;
-  background: var(--bg);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-.photo-break-panel {
-  position: relative; height: 480px; overflow: hidden;
-}
-/* Top/bottom section fades on the whole strip */
-.photo-break::before,
-.photo-break::after {
-  content: ''; position: absolute; left: 0; right: 0; z-index: 3; pointer-events: none;
-}
-.photo-break::before { top: 0; height: 40px; background: linear-gradient(to bottom, var(--bg2), transparent); }
-.photo-break::after  { bottom: 0; height: 80px; background: linear-gradient(to top, var(--bg), transparent); }
-/* Outer left/right edge fades */
-.photo-break-panel:first-child::before {
-  content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 80px; z-index: 2;
-  background: linear-gradient(to right, var(--bg2), transparent); pointer-events: none;
-}
-.photo-break-panel:last-child::after {
-  content: ''; position: absolute; top: 0; bottom: 0; right: 0; width: 80px; z-index: 2;
-  background: linear-gradient(to left, var(--bg), transparent); pointer-events: none;
-}
-/* Divider fade between the two panels */
-.photo-break-panel:first-child::after {
-  content: ''; position: absolute; top: 0; bottom: 0; right: 0; width: 60px; z-index: 2;
-  background: linear-gradient(to left, var(--bg2), transparent); pointer-events: none;
-}
-.photo-break-panel:last-child::before {
-  content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 60px; z-index: 2;
-  background: linear-gradient(to right, var(--bg2), transparent); pointer-events: none;
+  background: var(--bg2);
+  padding: 32px 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .photo-break-img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  filter: saturate(0.88) brightness(1.01);
   display: block;
+  width: auto;
+  height: auto;
+  max-width: min(860px, 92%);
+  max-height: 520px;
+  object-fit: contain;
+  border-radius: var(--r-lg);
+  box-shadow: 0 6px 40px rgba(44,33,24,0.12);
+  filter: saturate(0.88) brightness(1.01);
 }
-.photo-break-img.classroom { object-position: center 35%; }
-.photo-break-img.park      { object-position: center 30%; }
-.photo-break-caption {
-  position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
-  font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.2em;
-  text-transform: uppercase; color: var(--text3);
-  white-space: nowrap; pointer-events: none; z-index: 4;
-}
-[data-theme="dark"] .photo-break-img { filter: saturate(0.7) brightness(0.78); }
+[data-theme="dark"] .photo-break-img { filter: saturate(0.72) brightness(0.80); }
 @media (max-width: 768px) {
-  .photo-break { grid-template-columns: 1fr; }
-  .photo-break-panel { height: 280px; }
-  .photo-break-panel:first-child::after,
-  .photo-break-panel:last-child::before { display: none; }
-  .photo-break-panel:first-child::after {
-    top: auto; left: 0; right: 0; bottom: 0; width: auto; height: 50px;
-    background: linear-gradient(to top, var(--bg2), transparent);
-    display: block;
-  }
-  .photo-break-caption { display: none; }
+  .photo-break { padding: 24px 16px; }
+  .photo-break-img { max-width: 96%; max-height: 360px; border-radius: var(--r-md); }
+}
+@media (max-width: 480px) {
+  .photo-break-img { max-height: 260px; }
 }
 
 /* ═══════════════════════════════════════
@@ -2308,14 +2273,9 @@ footer {
   </div>
 </section>
 
-<!-- PHOTO BREAK: Classroom + Park -->
+<!-- PHOTO BREAK: Classroom -->
 <div class="photo-break reveal" aria-hidden="true">
-  <div class="photo-break-panel">
-    <img src="assets/child_classroom.png" alt="" class="photo-break-img classroom">
-  </div>
-  <div class="photo-break-panel">
-    <img src="assets/child_park.png" alt="" class="photo-break-img park">
-  </div>
+  <img src="assets/child_classroom.png" alt="" class="photo-break-img">
 </div>
 
 <!-- FEATURES -->
@@ -3169,6 +3129,11 @@ async function submitContactForm() {
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- Park photo -->
+      <div class="photo-break" aria-hidden="true">
+        <img src="assets/child_park.png" alt="" class="photo-break-img">
       </div>
 
       <!-- Magic Wand CTA card -->
