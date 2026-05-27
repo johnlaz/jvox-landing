@@ -1506,31 +1506,65 @@ nav {
 ═══════════════════════════════════════ */
 .photo-break {
   width: 100%;
-  background: var(--bg2);
-  padding: 32px 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  overflow: hidden; position: relative;
+  background: var(--bg);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
-.photo-break-panel { display: contents; }
+.photo-break-panel {
+  position: relative; height: 480px; overflow: hidden;
+}
+/* Top/bottom section fades on the whole strip */
+.photo-break::before,
+.photo-break::after {
+  content: ''; position: absolute; left: 0; right: 0; z-index: 3; pointer-events: none;
+}
+.photo-break::before { top: 0; height: 40px; background: linear-gradient(to bottom, var(--bg2), transparent); }
+.photo-break::after  { bottom: 0; height: 80px; background: linear-gradient(to top, var(--bg), transparent); }
+/* Outer left/right edge fades */
+.photo-break-panel:first-child::before {
+  content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 80px; z-index: 2;
+  background: linear-gradient(to right, var(--bg2), transparent); pointer-events: none;
+}
+.photo-break-panel:last-child::after {
+  content: ''; position: absolute; top: 0; bottom: 0; right: 0; width: 80px; z-index: 2;
+  background: linear-gradient(to left, var(--bg), transparent); pointer-events: none;
+}
+/* Divider fade between the two panels */
+.photo-break-panel:first-child::after {
+  content: ''; position: absolute; top: 0; bottom: 0; right: 0; width: 60px; z-index: 2;
+  background: linear-gradient(to left, var(--bg2), transparent); pointer-events: none;
+}
+.photo-break-panel:last-child::before {
+  content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 60px; z-index: 2;
+  background: linear-gradient(to right, var(--bg2), transparent); pointer-events: none;
+}
 .photo-break-img {
-  display: block;
-  width: auto;
-  height: auto;
-  max-width: min(860px, 92%);
-  max-height: 520px;
-  object-fit: contain;
-  border-radius: var(--r-lg);
-  box-shadow: 0 6px 40px rgba(44,33,24,0.12);
+  width: 100%; height: 100%;
+  object-fit: cover;
   filter: saturate(0.88) brightness(1.01);
+  display: block;
 }
-[data-theme="dark"] .photo-break-img { filter: saturate(0.72) brightness(0.80); }
+.photo-break-img.classroom { object-position: center 35%; }
+.photo-break-img.park      { object-position: center 30%; }
+.photo-break-caption {
+  position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+  font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--text3);
+  white-space: nowrap; pointer-events: none; z-index: 4;
+}
+[data-theme="dark"] .photo-break-img { filter: saturate(0.7) brightness(0.78); }
 @media (max-width: 768px) {
-  .photo-break { padding: 24px 16px; }
-  .photo-break-img { max-width: 96%; max-height: 360px; border-radius: var(--r-md); }
-}
-@media (max-width: 480px) {
-  .photo-break-img { max-height: 280px; }
+  .photo-break { grid-template-columns: 1fr; }
+  .photo-break-panel { height: 280px; }
+  .photo-break-panel:first-child::after,
+  .photo-break-panel:last-child::before { display: none; }
+  .photo-break-panel:first-child::after {
+    top: auto; left: 0; right: 0; bottom: 0; width: auto; height: 50px;
+    background: linear-gradient(to top, var(--bg2), transparent);
+    display: block;
+  }
+  .photo-break-caption { display: none; }
 }
 
 /* ═══════════════════════════════════════
@@ -1653,112 +1687,64 @@ footer {
   padding: 20px 16px 40px; overflow-y: auto; -webkit-overflow-scrolling: touch;
 }
 .aura-modal-overlay.open { display: flex; animation: am-fade 0.28s ease; }
-@keyframes am-fade { from { opacity:0; } to { opacity:1; } }
+@keyframes am-fade { from{opacity:0} to{opacity:1} }
 .aura-modal {
-  width: 100%; max-width: 720px;
-  background: var(--bg); border-radius: var(--r-xl); overflow: hidden;
+  width: 100%; max-width: 720px; background: var(--bg);
+  border-radius: var(--r-xl); overflow: hidden;
   box-shadow: 0 32px 80px rgba(20,10,5,0.45);
   animation: am-slide 0.3s cubic-bezier(0.22,1,0.36,1); margin: auto;
 }
-@keyframes am-slide { from { transform:translateY(28px);opacity:0; } to { transform:translateY(0);opacity:1; } }
+@keyframes am-slide { from{transform:translateY(28px);opacity:0} to{transform:translateY(0);opacity:1} }
 [data-theme="dark"] .aura-modal { background: var(--surface); }
 .aura-modal-hero {
-  background: linear-gradient(145deg, #1a0f08 0%, #2e1a0e 50%, #0e1a2e 100%);
+  background: linear-gradient(145deg,#1a0f08 0%,#2e1a0e 50%,#0e1a2e 100%);
   padding: 36px 32px 32px; position: relative; overflow: hidden;
 }
 .aura-modal-hero::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(176,90,58,0.18) 0%, transparent 65%),
-              radial-gradient(ellipse 50% 70% at 20% 80%, rgba(30,77,150,0.15) 0%, transparent 60%);
+  content:''; position:absolute; inset:0;
+  background: radial-gradient(ellipse 80% 60% at 70% 50%,rgba(176,90,58,0.18) 0%,transparent 65%),
+              radial-gradient(ellipse 50% 70% at 20% 80%,rgba(30,77,150,0.15) 0%,transparent 60%);
 }
 .aura-modal-close {
-  position: absolute; top: 16px; right: 16px; width: 34px; height: 34px;
-  border-radius: 50%; background: rgba(255,255,255,0.12); border: none;
-  color: rgba(255,255,255,0.8); font-size: 1.1rem; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: background 0.2s; z-index: 2;
+  position:absolute; top:16px; right:16px; width:34px; height:34px;
+  border-radius:50%; background:rgba(255,255,255,0.12); border:none;
+  color:rgba(255,255,255,0.8); font-size:1.1rem; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:background 0.2s; z-index:2;
 }
-.aura-modal-close:hover { background: rgba(255,255,255,0.22); }
-.aura-modal-hero-inner { position: relative; z-index: 1; }
-.aura-modal-eyebrow {
-  font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.2em;
-  text-transform: uppercase; color: rgba(201,169,110,0.9); margin-bottom: 10px;
-}
-.aura-modal-title {
-  font-family: var(--font-display); font-size: clamp(1.7rem,4vw,2.4rem);
-  font-weight: 400; color: #fff; line-height: 1.15; margin-bottom: 12px;
-}
-.aura-modal-title em { font-style: italic; color: #c9a96e; }
-.aura-modal-tagline { font-size: 0.88rem; color: rgba(255,255,255,0.65); line-height: 1.75; max-width: 480px; }
-.aura-modal-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
-.aura-pill {
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 5px 12px; border-radius: 100px;
-  font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.08em;
-  text-transform: uppercase; font-weight: 500;
-  background: rgba(255,255,255,0.10); color: rgba(255,255,255,0.75);
-  border: 1px solid rgba(255,255,255,0.14);
-}
-.aura-modal-body { padding: 0 32px 32px; }
-@media (max-width: 520px) {
-  .aura-modal-hero { padding: 28px 20px 24px; }
-  .aura-modal-body { padding: 0 20px 24px; }
-}
-.aura-section-label {
-  font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--terra); font-weight: 500; margin: 32px 0 16px;
-}
-.aura-section-title {
-  font-family: var(--font-display); font-size: 1.35rem; font-weight: 400;
-  color: var(--text); margin-bottom: 6px; line-height: 1.2;
-}
-.aura-section-title em { font-style: italic; color: var(--terra); }
-.aura-features { display: flex; flex-direction: column; gap: 2px; margin-bottom: 8px; }
-.aura-feat {
-  display: grid; grid-template-columns: 44px 1fr; gap: 0 16px;
-  padding: 16px 0; border-bottom: 1px solid var(--border2); align-items: start;
-}
-.aura-feat:last-child { border-bottom: none; }
-.aura-feat-icon {
-  width: 40px; height: 40px; border-radius: 12px; background: var(--terra-mid);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem; flex-shrink: 0; margin-top: 2px;
-}
-.aura-feat-name { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: 4px; line-height: 1.3; }
-.aura-feat-desc { font-size: 0.83rem; color: var(--text2); line-height: 1.8; }
-[data-theme="dark"] .aura-feat-desc { font-weight: 300; }
-.aura-feat-badge {
-  display: inline-block; margin-top: 6px;
-  font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.08em;
-  text-transform: uppercase; padding: 2px 8px; border-radius: 100px;
-  background: var(--terra-mid); color: var(--terra); font-weight: 500;
-}
-.aura-groq-steps { display: flex; flex-direction: column; gap: 0; margin: 16px 0 24px; }
-.aura-groq-step {
-  display: grid; grid-template-columns: 36px 1fr; gap: 0 14px;
-  align-items: start; padding: 14px 0; border-bottom: 1px solid var(--border2);
-}
-.aura-groq-step:last-child { border-bottom: none; }
-.aura-groq-num {
-  width: 32px; height: 32px; border-radius: 50%; background: var(--terra); color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500; flex-shrink: 0; margin-top: 1px;
-}
-.aura-groq-step-title { font-size: 0.88rem; font-weight: 700; color: var(--text); margin-bottom: 3px; }
-.aura-groq-step-desc { font-size: 0.82rem; color: var(--text2); line-height: 1.75; }
-[data-theme="dark"] .aura-groq-step-desc { font-weight: 300; }
-.aura-groq-step-desc a { color: var(--terra); text-underline-offset: 3px; }
-.aura-callout {
-  background: var(--terra-light); border: 1px solid rgba(176,90,58,0.2);
-  border-radius: var(--r-md); padding: 16px 20px;
-  font-size: 0.83rem; color: var(--text2); line-height: 1.8; margin: 20px 0 0;
-}
-[data-theme="dark"] .aura-callout { background: var(--terra-mid); }
-.aura-callout strong { color: var(--terra); }
-.aura-modal-cta {
-  display: flex; gap: 10px; flex-wrap: wrap;
-  padding-top: 24px; border-top: 1px solid var(--border2); margin-top: 28px;
-}
+.aura-modal-close:hover { background:rgba(255,255,255,0.22); }
+.aura-modal-hero-inner { position:relative; z-index:1; }
+.aura-modal-eyebrow { font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(201,169,110,0.9); margin-bottom:10px; }
+.aura-modal-title { font-family:var(--font-display); font-size:clamp(1.7rem,4vw,2.4rem); font-weight:400; color:#fff; line-height:1.15; margin-bottom:12px; }
+.aura-modal-title em { font-style:italic; color:#c9a96e; }
+.aura-modal-tagline { font-size:0.88rem; color:rgba(255,255,255,0.65); line-height:1.75; max-width:480px; }
+.aura-modal-pills { display:flex; gap:8px; flex-wrap:wrap; margin-top:20px; }
+.aura-pill { display:inline-flex; align-items:center; gap:5px; padding:5px 12px; border-radius:100px; font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.08em; text-transform:uppercase; font-weight:500; background:rgba(255,255,255,0.10); color:rgba(255,255,255,0.75); border:1px solid rgba(255,255,255,0.14); }
+.aura-modal-body { padding:0 32px 32px; }
+@media (max-width:520px) { .aura-modal-hero{padding:28px 20px 24px;} .aura-modal-body{padding:0 20px 24px;} }
+.aura-section-label { font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--terra); font-weight:500; margin:32px 0 16px; }
+.aura-section-title { font-family:var(--font-display); font-size:1.35rem; font-weight:400; color:var(--text); margin-bottom:6px; line-height:1.2; }
+.aura-section-title em { font-style:italic; color:var(--terra); }
+.aura-features { display:flex; flex-direction:column; gap:2px; margin-bottom:8px; }
+.aura-feat { display:grid; grid-template-columns:44px 1fr; gap:0 16px; padding:16px 0; border-bottom:1px solid var(--border2); align-items:start; }
+.aura-feat:last-child { border-bottom:none; }
+.aura-feat-icon { width:40px; height:40px; border-radius:12px; background:var(--terra-mid); display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; margin-top:2px; }
+.aura-feat-name { font-size:0.9rem; font-weight:700; color:var(--text); margin-bottom:4px; line-height:1.3; }
+.aura-feat-desc { font-size:0.83rem; color:var(--text2); line-height:1.8; }
+[data-theme="dark"] .aura-feat-desc { font-weight:300; }
+.aura-feat-badge { display:inline-block; margin-top:6px; font-family:var(--font-mono); font-size:0.6rem; letter-spacing:0.08em; text-transform:uppercase; padding:2px 8px; border-radius:100px; background:var(--terra-mid); color:var(--terra); font-weight:500; }
+.aura-groq-steps { display:flex; flex-direction:column; gap:0; margin:16px 0 24px; }
+.aura-groq-step { display:grid; grid-template-columns:36px 1fr; gap:0 14px; align-items:start; padding:14px 0; border-bottom:1px solid var(--border2); }
+.aura-groq-step:last-child { border-bottom:none; }
+.aura-groq-num { width:32px; height:32px; border-radius:50%; background:var(--terra); color:#fff; display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:0.75rem; font-weight:500; flex-shrink:0; margin-top:1px; }
+.aura-groq-step-title { font-size:0.88rem; font-weight:700; color:var(--text); margin-bottom:3px; }
+.aura-groq-step-desc { font-size:0.82rem; color:var(--text2); line-height:1.75; }
+[data-theme="dark"] .aura-groq-step-desc { font-weight:300; }
+.aura-groq-step-desc a { color:var(--terra); text-underline-offset:3px; }
+.aura-callout { background:var(--terra-light); border:1px solid rgba(176,90,58,0.2); border-radius:var(--r-md); padding:16px 20px; font-size:0.83rem; color:var(--text2); line-height:1.8; margin:20px 0 0; }
+[data-theme="dark"] .aura-callout { background:var(--terra-mid); }
+.aura-callout strong { color:var(--terra); }
+.aura-modal-cta { display:flex; gap:10px; flex-wrap:wrap; padding-top:24px; border-top:1px solid var(--border2); margin-top:28px; }
 
 /* ── CONTACT MODAL ── */
 .contact-overlay {
@@ -2322,9 +2308,14 @@ footer {
   </div>
 </section>
 
-<!-- PHOTO BREAK: Classroom -->
+<!-- PHOTO BREAK: Classroom + Park -->
 <div class="photo-break reveal" aria-hidden="true">
-  <img src="assets/child_classroom.png" alt="" class="photo-break-img">
+  <div class="photo-break-panel">
+    <img src="assets/child_classroom.png" alt="" class="photo-break-img classroom">
+  </div>
+  <div class="photo-break-panel">
+    <img src="assets/child_park.png" alt="" class="photo-break-img park">
+  </div>
 </div>
 
 <!-- FEATURES -->
@@ -2966,9 +2957,8 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { clo
 
 /* ── AURA MODAL ── */
 function openAuraModal() {
-  const overlay = document.getElementById('auraModalOverlay');
-  overlay.classList.add('open');
-  overlay.scrollTop = 0;
+  const o = document.getElementById('auraModalOverlay');
+  o.classList.add('open'); o.scrollTop = 0;
   document.body.style.overflow = 'hidden';
   document.addEventListener('keydown', _auraEsc);
 }
@@ -3179,11 +3169,6 @@ async function submitContactForm() {
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- Park photo -->
-      <div class="photo-break" aria-hidden="true">
-        <img src="assets/child_park.png" alt="" class="photo-break-img">
       </div>
 
       <!-- Magic Wand CTA card -->
@@ -3647,32 +3632,32 @@ async function submitContactForm() {
       </div>
       <div class="aura-section-label">How to Unlock Aura</div>
       <div class="aura-section-title">Get your free <em>Groq API key</em></div>
-      <p style="font-size:0.84rem;color:var(--text2);line-height:1.8;margin:8px 0 4px;">Aura features are powered by Groq — a free AI platform. You'll need a free API key to activate them. It takes under two minutes and requires no payment information.</p>
+      <p style="font-size:0.84rem;color:var(--text2);line-height:1.8;margin:8px 0 4px;">Aura features are powered by Groq — a free AI platform. Takes under two minutes, no payment info required.</p>
       <div class="aura-groq-steps">
         <div class="aura-groq-step">
           <div class="aura-groq-num">1</div>
           <div>
             <div class="aura-groq-step-title">Visit console.groq.com</div>
-            <div class="aura-groq-step-desc">Go to <a href="https://console.groq.com" target="_blank" rel="noopener">console.groq.com</a> in any browser. Click <strong>Sign Up</strong> — you can use a Google account or email. No payment info required at any step.</div>
+            <div class="aura-groq-step-desc">Go to <a href="https://console.groq.com" target="_blank" rel="noopener">console.groq.com</a> and click <strong>Sign Up</strong> — Google account or email works. No payment info required.</div>
           </div>
         </div>
         <div class="aura-groq-step">
           <div class="aura-groq-num">2</div>
           <div>
             <div class="aura-groq-step-title">Create an API Key</div>
-            <div class="aura-groq-step-desc">Once logged in, click <strong>API Keys</strong> in the left sidebar, then <strong>Create API Key</strong>. Give it any name (e.g. "jVox"). Copy the key — it starts with <code style="font-family:var(--font-mono);font-size:0.78em;background:var(--bg3);padding:1px 5px;border-radius:4px;">gsk_</code>. You only see it once, so copy it before closing.</div>
+            <div class="aura-groq-step-desc">Click <strong>API Keys</strong> in the sidebar, then <strong>Create API Key</strong>. Name it anything (e.g. "jVox"). Copy the key — starts with <code style="font-family:var(--font-mono);font-size:0.78em;background:var(--bg3);padding:1px 5px;border-radius:4px;">gsk_</code> — you only see it once.</div>
           </div>
         </div>
         <div class="aura-groq-step">
           <div class="aura-groq-num">3</div>
           <div>
             <div class="aura-groq-step-title">Paste it into jVox Settings</div>
-            <div class="aura-groq-step-desc">Open jVox, tap the <strong>⚙ Settings</strong> icon, scroll to <strong>Aura / AI Settings</strong>, and paste your key. All Aura features activate immediately — no restart, no account, no waiting.</div>
+            <div class="aura-groq-step-desc">Open jVox, tap <strong>⚙ Settings</strong>, scroll to <strong>Aura / AI Settings</strong>, and paste your key. All Aura features activate immediately.</div>
           </div>
         </div>
       </div>
       <div class="aura-callout">
-        <strong>Why Groq?</strong> Groq runs AI inference at exceptional speed — essential for real-time features like Magic Wand and Ambient-Sense. Their free tier is genuinely free, with generous limits that cover typical daily jVox usage. We're working toward a future where jVox covers this cost entirely so families never have to manage an API key.
+        <strong>Why Groq?</strong> Groq runs AI inference at exceptional speed — essential for real-time features like Magic Wand and Ambient-Sense. Their free tier covers typical daily jVox usage. We're working toward covering this cost entirely so families never have to manage an API key.
       </div>
       <div class="aura-modal-cta">
         <a href="https://app.jvox.org/" class="btn-primary" onclick="track('launch_clicks');closeAuraModal();">↗ Open jVox &amp; Try Aura Free</a>
