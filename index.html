@@ -1547,6 +1547,15 @@ nav {
 }
 .photo-break-img.classroom { object-position: center 35%; }
 .photo-break-img.park      { object-position: center 30%; }
+/* Single-panel variant — full width, slightly shorter */
+.photo-break.photo-break-single { grid-template-columns: 1fr; }
+.photo-break.photo-break-single .photo-break-panel { height: 380px; }
+@media (max-width: 768px) {
+  .photo-break.photo-break-single .photo-break-panel { height: 240px; }
+}
+@media (min-width: 1200px) {
+  .photo-break.photo-break-single .photo-break-panel { height: 440px; }
+}
 .photo-break-caption {
   position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
   font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.2em;
@@ -1554,6 +1563,7 @@ nav {
   white-space: nowrap; pointer-events: none; z-index: 4;
 }
 [data-theme="dark"] .photo-break-img { filter: saturate(0.7) brightness(0.78); }
+[data-theme="dark"] .impact-park-photo { filter: saturate(0.7) brightness(0.78); }
 @media (max-width: 768px) {
   .photo-break { grid-template-columns: 1fr; }
   .photo-break-panel { height: 280px; }
@@ -1677,6 +1687,168 @@ footer {
 .ss-nav-dots { display: flex; gap: 6px; align-items: center; }
 .ss-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: background 0.2s; }
 .ss-dot.active { background: #fff; }
+
+/* ── AURA DEEP-DIVE MODAL ── */
+.aura-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(20,10,5,0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  align-items: flex-start;
+  justify-content: center;
+  padding: 20px 16px 40px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.aura-modal-overlay.open { display: flex; animation: am-fade 0.28s ease; }
+@keyframes am-fade { from { opacity: 0; } to { opacity: 1; } }
+
+.aura-modal {
+  width: 100%;
+  max-width: 720px;
+  background: var(--bg);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  box-shadow: 0 32px 80px rgba(20,10,5,0.45);
+  animation: am-slide 0.3s cubic-bezier(0.22,1,0.36,1);
+  margin: auto;
+}
+@keyframes am-slide { from { transform: translateY(28px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+[data-theme="dark"] .aura-modal { background: var(--surface); }
+
+.aura-modal-hero {
+  background: linear-gradient(145deg, #1a0f08 0%, #2e1a0e 50%, #0e1a2e 100%);
+  padding: 36px 32px 32px;
+  position: relative;
+  overflow: hidden;
+}
+.aura-modal-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(176,90,58,0.18) 0%, transparent 65%),
+              radial-gradient(ellipse 50% 70% at 20% 80%, rgba(30,77,150,0.15) 0%, transparent 60%);
+}
+.aura-modal-close {
+  position: absolute; top: 16px; right: 16px;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255,255,255,0.12); border: none;
+  color: rgba(255,255,255,0.8); font-size: 1.1rem;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s; z-index: 2;
+}
+.aura-modal-close:hover { background: rgba(255,255,255,0.22); }
+.aura-modal-hero-inner { position: relative; z-index: 1; }
+.aura-modal-eyebrow {
+  font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: rgba(201,169,110,0.9); margin-bottom: 10px;
+}
+.aura-modal-title {
+  font-family: var(--font-display); font-size: clamp(1.7rem, 4vw, 2.4rem);
+  font-weight: 400; color: #fff; line-height: 1.15; margin-bottom: 12px;
+}
+.aura-modal-title em { font-style: italic; color: #c9a96e; }
+.aura-modal-tagline {
+  font-size: 0.88rem; color: rgba(255,255,255,0.65); line-height: 1.75;
+  max-width: 480px; font-weight: 400;
+}
+
+/* Pill badge row */
+.aura-modal-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+.aura-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 12px; border-radius: 100px;
+  font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.08em;
+  text-transform: uppercase; font-weight: 500;
+  background: rgba(255,255,255,0.10); color: rgba(255,255,255,0.75);
+  border: 1px solid rgba(255,255,255,0.14);
+}
+
+/* Body */
+.aura-modal-body { padding: 0 32px 32px; }
+@media (max-width: 520px) {
+  .aura-modal-hero { padding: 28px 20px 24px; }
+  .aura-modal-body { padding: 0 20px 24px; }
+}
+
+/* Section titles inside modal */
+.aura-section-label {
+  font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--terra); font-weight: 500;
+  margin: 32px 0 16px;
+}
+.aura-section-title {
+  font-family: var(--font-display); font-size: 1.35rem; font-weight: 400;
+  color: var(--text); margin-bottom: 6px; line-height: 1.2;
+}
+.aura-section-title em { font-style: italic; color: var(--terra); }
+
+/* Feature rows */
+.aura-features { display: flex; flex-direction: column; gap: 2px; margin-bottom: 8px; }
+.aura-feat {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 0 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border2);
+  align-items: start;
+}
+.aura-feat:last-child { border-bottom: none; }
+.aura-feat-icon {
+  width: 40px; height: 40px; border-radius: 12px;
+  background: var(--terra-mid); display: flex; align-items: center;
+  justify-content: center; font-size: 1.1rem; flex-shrink: 0; margin-top: 2px;
+}
+.aura-feat-name {
+  font-size: 0.9rem; font-weight: 700; color: var(--text);
+  margin-bottom: 4px; line-height: 1.3;
+}
+.aura-feat-desc { font-size: 0.83rem; color: var(--text2); line-height: 1.8; }
+[data-theme="dark"] .aura-feat-desc { font-weight: 300; }
+.aura-feat-badge {
+  display: inline-block; margin-top: 6px;
+  font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 2px 8px; border-radius: 100px;
+  background: var(--terra-mid); color: var(--terra); font-weight: 500;
+}
+
+/* Groq steps */
+.aura-groq-steps { display: flex; flex-direction: column; gap: 0; margin: 16px 0 24px; }
+.aura-groq-step {
+  display: grid; grid-template-columns: 36px 1fr;
+  gap: 0 14px; align-items: start; padding: 14px 0;
+  border-bottom: 1px solid var(--border2);
+}
+.aura-groq-step:last-child { border-bottom: none; }
+.aura-groq-num {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--terra); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500;
+  flex-shrink: 0; margin-top: 1px;
+}
+.aura-groq-step-title { font-size: 0.88rem; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.aura-groq-step-desc { font-size: 0.82rem; color: var(--text2); line-height: 1.75; }
+[data-theme="dark"] .aura-groq-step-desc { font-weight: 300; }
+.aura-groq-step-desc a { color: var(--terra); text-underline-offset: 3px; }
+
+/* Info callout */
+.aura-callout {
+  background: var(--terra-light); border: 1px solid rgba(176,90,58,0.2);
+  border-radius: var(--r-md); padding: 16px 20px;
+  font-size: 0.83rem; color: var(--text2); line-height: 1.8;
+  margin: 20px 0 0;
+}
+[data-theme="dark"] .aura-callout { background: var(--terra-mid); }
+.aura-callout strong { color: var(--terra); }
+
+/* CTA row */
+.aura-modal-cta {
+  display: flex; gap: 10px; flex-wrap: wrap;
+  padding-top: 24px; border-top: 1px solid var(--border2); margin-top: 28px;
+}
 
 /* ── CONTACT MODAL ── */
 .contact-overlay {
@@ -2240,13 +2412,10 @@ footer {
   </div>
 </section>
 
-<!-- PHOTO BREAK: Classroom + Park -->
-<div class="photo-break reveal" aria-hidden="true">
+<!-- PHOTO BREAK: Classroom -->
+<div class="photo-break photo-break-single reveal" aria-hidden="true">
   <div class="photo-break-panel">
     <img src="assets/child_classroom.png" alt="" class="photo-break-img classroom">
-  </div>
-  <div class="photo-break-panel">
-    <img src="assets/child_park.png" alt="" class="photo-break-img park">
   </div>
 </div>
 
@@ -2353,6 +2522,7 @@ footer {
         <li><span class="tier-check" aria-hidden="true">✓</span><span><span class="tier-feature-label">Regulate &amp; Zen Mode</span> <span class="tier-feature-desc">— calm first, communicate second</span></span></li>
         <li><span class="tier-check" aria-hidden="true">✓</span><span>Free API key required — AI usage open until formal launch</span></li>
       </ul>
+      <button class="btn-ghost" style="width:100%;margin-top:20px;font-size:0.84rem;" onclick="openAuraModal()">✦ Learn how Aura works →</button>
     </div>
   </div>
   <p class="reveal" style="text-align:center;margin-top:28px;color:var(--text3);font-size:0.82rem;letter-spacing:0.05em;font-family:'DM Mono',monospace;max-width:600px;margin-left:auto;margin-right:auto;line-height:1.7;font-weight:400;">
@@ -2886,6 +3056,21 @@ function updateSSDots() { document.querySelectorAll('.ss-dot').forEach(function(
 function closeSS() { document.getElementById('ssOverlay').classList.remove('open'); document.body.style.overflow = ''; }
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closeSS(); } });
 
+/* ── AURA MODAL ── */
+function openAuraModal() {
+  const overlay = document.getElementById('auraModalOverlay');
+  overlay.classList.add('open');
+  overlay.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+  document.addEventListener('keydown', _auraEsc);
+}
+function closeAuraModal() {
+  document.getElementById('auraModalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  document.removeEventListener('keydown', _auraEsc);
+}
+function _auraEsc(e) { if (e.key === 'Escape') closeAuraModal(); }
+
 /* ── CONTACT MODAL ── */
 let cfSelectedType = '';
 
@@ -3170,6 +3355,12 @@ async function submitContactForm() {
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Human moment photo break -->
+  <div style="width:100%;overflow:hidden;position:relative;background:var(--bg);">
+    <img src="assets/child_park.png" alt="Child communicating outdoors using jVox AAC" class="impact-park-photo" style="width:100%;height:clamp(220px,30vw,420px);object-fit:cover;object-position:center 30%;display:block;filter:saturate(0.88) brightness(1.01);">
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,var(--bg) 0%,transparent 18%,transparent 78%,var(--bg2) 100%);pointer-events:none;"></div>
   </div>
 
   <!-- Full Research Data -->
@@ -3476,6 +3667,122 @@ async function submitContactForm() {
 
 </div><!-- end #faqView -->
 
+
+<!-- AURA DEEP-DIVE MODAL -->
+<div class="aura-modal-overlay" id="auraModalOverlay" role="dialog" aria-modal="true" aria-labelledby="auraModalTitle" onclick="if(event.target===this)closeAuraModal()">
+  <div class="aura-modal">
+
+    <div class="aura-modal-hero">
+      <button class="aura-modal-close" onclick="closeAuraModal()" aria-label="Close">✕</button>
+      <div class="aura-modal-hero-inner">
+        <div class="aura-modal-eyebrow">jVox · Aura — AI Intelligence Layer</div>
+        <h2 class="aura-modal-title" id="auraModalTitle">Your surroundings.<br><em>Your words.</em> Instantly.</h2>
+        <p class="aura-modal-tagline">Aura transforms jVox from a communication board into an intelligent, context-aware voice — one that understands where you are, what's happening around you, and what you probably need to say next.</p>
+        <div class="aura-modal-pills">
+          <span class="aura-pill">✨ AI-Powered</span>
+          <span class="aura-pill">🔒 On-Device Privacy</span>
+          <span class="aura-pill">⚡ Real-Time</span>
+          <span class="aura-pill">🆓 Free During Early Access</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="aura-modal-body">
+
+      <div class="aura-section-label">What Aura Does</div>
+      <p style="font-size:0.85rem;color:var(--text2);line-height:1.85;margin-bottom:4px;">Each Aura feature uses a different sense to understand context — then surfaces the most relevant phrases before you even know you need them.</p>
+
+      <div class="aura-features">
+        <div class="aura-feat">
+          <div class="aura-feat-icon">✨</div>
+          <div>
+            <div class="aura-feat-name">Magic Wand AI — Sentence Refinement</div>
+            <div class="aura-feat-desc">Tap a few words into the sentence bar, hit the wand, and jVox transforms them into a complete, natural sentence — preserving your exact intent while perfecting the language. No typing. No fumbling. Just one tap between a thought and a voice.</div>
+            <span class="aura-feat-badge">Works on any assembled phrase</span>
+          </div>
+        </div>
+        <div class="aura-feat">
+          <div class="aura-feat-icon">📷</div>
+          <div>
+            <div class="aura-feat-name">Visual-Sense — Camera Context Scanning</div>
+            <div class="aura-feat-desc">Point jVox at your surroundings and it reads the scene. Standing in front of a menu board? It surfaces food and ordering phrases. In a waiting room? Medical vocabulary appears. jVox sees what you see and prepares the words you'll need.</div>
+            <span class="aura-feat-badge">Uses device camera — never stores images</span>
+          </div>
+        </div>
+        <div class="aura-feat">
+          <div class="aura-feat-icon">🎙️</div>
+          <div>
+            <div class="aura-feat-name">Ambient-Sense — Environmental Listening</div>
+            <div class="aura-feat-desc">jVox listens to the ambient sounds around you — without recording or storing audio — and infers context from what it hears. At a restaurant it catches background sounds; in a classroom it picks up instruction cues. Relevant phrase categories move to the front automatically.</div>
+            <span class="aura-feat-badge">Ambient only — no voice recording stored</span>
+          </div>
+        </div>
+        <div class="aura-feat">
+          <div class="aura-feat-icon">📍</div>
+          <div>
+            <div class="aura-feat-name">Geo-Sense — Location-Aware Phrase Boards</div>
+            <div class="aura-feat-desc">jVox knows when you arrive at school, a hospital, a park, or a store — and reconfigures your phrase boards accordingly. The vocabulary that matters at this place rises to the top before you even open the app. Boards you build for specific places load automatically on arrival.</div>
+            <span class="aura-feat-badge">Location used locally — never transmitted</span>
+          </div>
+        </div>
+        <div class="aura-feat">
+          <div class="aura-feat-icon">🎭</div>
+          <div>
+            <div class="aura-feat-name">Situation Card Builder — Custom Phrase Packs</div>
+            <div class="aura-feat-desc">Describe any situation in plain language — "dentist appointment," "playdate at the park," "ordering at a restaurant" — and jVox generates a complete, customized phrase card for that exact context. Three steps: name it, describe it, use it. Build unlimited cards for every recurring scenario in the user's life.</div>
+            <span class="aura-feat-badge">AI-generated, fully editable</span>
+          </div>
+        </div>
+        <div class="aura-feat">
+          <div class="aura-feat-icon">🌿</div>
+          <div>
+            <div class="aura-feat-name">Regulate &amp; Zen Mode — Calm Before Communication</div>
+            <div class="aura-feat-desc">When sensory overload or anxiety makes communication impossible, Zen Mode creates a full-screen sanctuary. Choose from Rain, Ocean, Forest, or Tones. A guided breathing animation helps the body regulate. Communication resumes when the person is ready — not before.</div>
+            <span class="aura-feat-badge">Offline capable once loaded</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="aura-section-label">How to Unlock Aura</div>
+      <div class="aura-section-title">Get your free <em>Groq API key</em></div>
+      <p style="font-size:0.84rem;color:var(--text2);line-height:1.8;margin:8px 0 4px;">Aura features are powered by Groq — a free AI platform. You'll need a free API key to activate them. It takes under two minutes and requires no payment information.</p>
+
+      <div class="aura-groq-steps">
+        <div class="aura-groq-step">
+          <div class="aura-groq-num">1</div>
+          <div>
+            <div class="aura-groq-step-title">Visit console.groq.com</div>
+            <div class="aura-groq-step-desc">Go to <a href="https://console.groq.com" target="_blank" rel="noopener">console.groq.com</a> in any browser. Click <strong>Sign Up</strong> — you can use a Google account or email. No payment info required at any step.</div>
+          </div>
+        </div>
+        <div class="aura-groq-step">
+          <div class="aura-groq-num">2</div>
+          <div>
+            <div class="aura-groq-step-title">Create an API Key</div>
+            <div class="aura-groq-step-desc">Once logged in, click <strong>API Keys</strong> in the left sidebar, then <strong>Create API Key</strong>. Give it any name (e.g. "jVox"). Copy the key — it starts with <code style="font-family:var(--font-mono);font-size:0.78em;background:var(--bg3);padding:1px 5px;border-radius:4px;">gsk_</code>. You only see it once, so copy it before closing.</div>
+          </div>
+        </div>
+        <div class="aura-groq-step">
+          <div class="aura-groq-num">3</div>
+          <div>
+            <div class="aura-groq-step-title">Paste it into jVox Settings</div>
+            <div class="aura-groq-step-desc">Open jVox, tap the <strong>⚙ Settings</strong> icon, scroll to <strong>Aura / AI Settings</strong>, and paste your key. All Aura features activate immediately — no restart, no account, no waiting.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="aura-callout">
+        <strong>Why Groq?</strong> Groq runs AI inference at exceptional speed — essential for real-time features like Magic Wand and Ambient-Sense. Their free tier is genuinely free, with generous limits that cover typical daily jVox usage. We're working toward a future where jVox covers this cost entirely so families never have to manage an API key.
+      </div>
+
+      <div class="aura-modal-cta">
+        <a href="https://app.jvox.org/" class="btn-primary" onclick="track('launch_clicks');closeAuraModal();">↗ Open jVox &amp; Try Aura Free</a>
+        <a href="https://console.groq.com" target="_blank" rel="noopener" class="btn-ghost">Get Groq API Key →</a>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <!-- CONTACT MODAL -->
 <div class="contact-overlay" id="contactOverlay" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
