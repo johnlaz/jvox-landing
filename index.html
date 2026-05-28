@@ -850,41 +850,30 @@ nav {
 .hero-copy { display: flex; flex-direction: column; align-items: flex-start; }
 
 /* Chips */
-.hero-tag {
-  display: inline-flex; align-items: center;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 100px; padding: 5px 14px;
-  margin-bottom: 24px;
+.hero-feature-list {
+  display: inline-flex; flex-direction: column; align-items: center;
+  gap: 9px; margin-bottom: 32px;
+  padding: 14px 24px 14px 21px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-left: 3px solid var(--terra);
+  border-radius: 14px;
   animation: fade-up 0.8s ease 0.1s both;
-  box-shadow: 0 2px 10px rgba(44,33,24,0.06);
-  gap: 0; flex-wrap: wrap;
-  justify-content: center;
 }
-.hero-tag-item {
-  display: inline-flex; align-items: center;
+.hfl-row {
   font-family: var(--font-mono); font-size: 0.65rem;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  font-weight: 500; white-space: nowrap;
-  background: none; border: none; padding: 2px 6px;
+  letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500;
+  line-height: 1;
 }
-.hero-tag-dot { color: var(--text3); font-size: 0.6rem; line-height: 1; flex-shrink: 0; }
-.hero-tag-item.chip-ai   { color: var(--terra); }
-.hero-tag-item.chip-love { color: var(--blush); }
-.hero-tag-item.chip-free { color: var(--sage); }
-[data-theme="dark"] .hero-tag { background: var(--surface); border-color: var(--border); box-shadow: none; }
-[data-theme="dark"] .hero-tag-item.chip-love { color: var(--sage); }
-[data-theme="dark"] .hero-tag-item.chip-free { color: var(--sage); }
-
-@media (max-width: 600px) {
-  .hero-tag {
-    flex-direction: column;
-    border-radius: 18px;
-    padding: 10px 16px;
-    gap: 4px;
-  }
-  .hero-tag-dot { display: none; }        /* hide dots when stacked */
-  .hero-tag-item { padding: 1px 0; }
+.hfl-terra { color: var(--terra); }
+.hfl-navy  { color: var(--sage); }
+.hfl-muted { color: var(--text3); }
+[data-theme="dark"] .hero-feature-list {
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(255,255,255,0.06);
+  border-left-color: var(--terra);
 }
+@media (max-width: 1024px) { .hero-feature-list { align-self: center; } }
 
 .hero-title {
   font-family: var(--font-display);
@@ -901,89 +890,6 @@ nav {
   line-height: 1.85; max-width: 480px;
   margin-bottom: 20px; font-weight: 500;
   animation: fade-up 0.8s ease 0.2s both;
-}
-
-/* Pricing pill */
-/* ─────────────────────────────────────────
-   PRICING PILL — Approach 2 (Sub-Pills) ACTIVE
-   Master container uses inline-flex + wrap.
-   Each phrase is its own sub-pill so wrapping
-   always breaks cleanly between whole ideas,
-   never mid-phrase. Border-radius softens on
-   wrap via the .wrapped state added by JS.
-───────────────────────────────────────── */
-.hero-pricing-note {
-  display: inline-flex;
-  flex-direction: row;
-  align-items: center;
-  flex-wrap: wrap;                  /* allows rows, but only at sub-pill boundaries */
-  justify-content: center;
-  gap: 6px;                         /* space between sub-pills */
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 100px;             /* full pill on single line */
-  padding: 6px 10px;
-  margin-bottom: 32px;
-  max-width: 100%;
-  animation: fade-up 0.8s ease 0.26s both;
-  box-shadow: 0 2px 10px rgba(44,33,24,0.06);
-  transition: border-radius 0.2s;
-}
-/* Each sub-pill: self-contained, never breaks internally */
-.pricing-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  white-space: nowrap;              /* phrase stays on one line always */
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-weight: 500;
-  padding: 3px 10px;
-  border-radius: 100px;
-  border: 1px solid transparent;
-  line-height: 1.4;
-  transition: background 0.2s;
-}
-.pricing-chip.free {
-  color: var(--sage);
-  background: var(--sage-light);
-  border-color: rgba(30,77,150,0.15);
-}
-.pricing-chip.ai {
-  color: var(--terra);
-  background: var(--terra-light);
-  border-color: rgba(176,90,58,0.18);
-}
-.pricing-chip.neutral {
-  color: var(--text3);
-  background: var(--bg2);
-  border-color: var(--border2);
-}
-[data-theme="dark"] .hero-pricing-note { background: var(--surface); border-color: var(--border); box-shadow: none; }
-[data-theme="dark"] .pricing-chip.free    { color: var(--terra); background: var(--terra-light); border-color: var(--terra-mid); }
-[data-theme="dark"] .pricing-chip.ai      { color: var(--sage);  background: var(--sage-light);  border-color: var(--sage-mid); }
-[data-theme="dark"] .pricing-chip.neutral { color: var(--text2); background: var(--surface2);    border-color: var(--border2); }
-
-/* ─────────────────────────────────────────
-   APPROACH 1 (Stacking) — active
-   Single-line pill on desktop, clean stacked
-   column on mobile with softer border-radius.
-───────────────────────────────────────── */
-@media (max-width: 600px) {
-  .hero-pricing-note {
-    flex-direction: column;
-    align-items: center;
-    border-radius: 18px;
-    padding: 12px 16px;
-    gap: 8px;
-  }
-  .hero-pricing-note .pricing-chip {
-    background: none;
-    border: none;
-    padding: 2px 0;
-  }
 }
 
 /* Kill old classes that are now unused */
@@ -1124,7 +1030,7 @@ nav {
   .hero-copy { align-items: center; }
   .hero-sub { margin-left: auto; margin-right: auto; }
   .hero-actions { justify-content: center; }
-  .hero-pricing-note { justify-content: center; }
+  .hero-feature-list { align-self: center; }
 
   #hero { min-height: auto; }
   .hero-arc { height: 50px; }
@@ -2168,19 +2074,14 @@ footer {
 
     <!-- LEFT: copy -->
     <div class="hero-copy">
-      <div class="hero-tag" role="text" aria-label="AI-Powered, Built with Love, Free to Start">
-        <div class="hero-tag-item chip-ai">✦ AI-Powered</div>
-        <span class="hero-tag-dot">·</span>
-        <div class="hero-tag-item chip-love">Built with Love</div>
-        <span class="hero-tag-dot">·</span>
-        <div class="hero-tag-item chip-free">Free to Start</div>
-      </div>
+
       <h1 class="hero-title" id="hero-heading">Every Person<br>Deserves a <em>Voice</em></h1>
       <p class="hero-sub">A full-featured AAC app for non-verbal individuals — free at its core, with optional AI-powered features that unlock deeper expression.</p>
-      <div class="hero-pricing-note" id="pricingPill" aria-label="Pricing summary">
-        <span class="pricing-chip free">✦ Core — Always Free</span>
-        <span class="pricing-chip ai">✨ Aura AI — Premium Access</span>
-        <span class="pricing-chip neutral">No Credit Card Required</span>
+      <div class="hero-feature-list" id="pricingPill" aria-label="Pricing summary">
+        <div class="hfl-row hfl-terra">AI-Powered · Built with Love</div>
+        <div class="hfl-row hfl-navy">✦ Core — Always Free</div>
+        <div class="hfl-row hfl-terra">✨ Aura AI — Premium Access</div>
+        <div class="hfl-row hfl-muted">No Credit Card Required</div>
       </div>
       <div class="hero-actions">
         <a href="https://app.jvox.org/" class="btn-primary" onclick="track('launch_clicks')">↗ Open jVox Free</a>
@@ -2442,7 +2343,7 @@ footer {
     <div class="footer-logo">jVox AAC</div>
   </div>
   <div class="footer-copy">Made with <span class="footer-heart" aria-label="love">♥</span> for families who communicate differently</div>
-  <div class="footer-copy">© 2025 LAZLAB Creations. All rights reserved. &nbsp;·&nbsp; <a href="#" onclick="showImpact();return false;" style="color:var(--terra);text-decoration:none;">Global Impact</a></div>
+  <div class="footer-copy">© 2025 LAZLAB Creations. All rights reserved.</div>
 </footer>
 
 <!-- SCREENSHOT MODAL -->
